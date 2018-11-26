@@ -83,7 +83,7 @@ embed = hub.Module(module_url)
 
 x = Sequential()
 embedding = layers.Lambda(UniversalEmbedding, output_shape=(300,), trainable=False)
-x.add(embedding))
+x.add(embedding)
 x.add(LSTM(n_hidden))
 
 shared_model = x
@@ -96,12 +96,6 @@ right_input = Input(shape=(max_seq_length,), dtype='int32')
 malstm_distance = ManDist()([shared_model(left_input), shared_model(right_input)])
 model = Model(inputs=[left_input, right_input], outputs=[malstm_distance])
 
-if gpus >= 2:
-    # `multi_gpu_model()` is a so quite buggy. it breaks the saved model.
-    model = tf.keras.utils.multi_gpu_model(model, gpus=gpus)
-model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
-model.summary()
-shared_model.summary()
 
 with tf.Session() as session:
     K.set_session(session)
@@ -110,6 +104,9 @@ with tf.Session() as session:
 
     # Start trainings
     training_start_time = time()
+    model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
+    model.summary()
+    shared_model.summary()
     callbacks = [EarlyStopping(monitor='val_loss', patience=4)]
     malstm_trained = model.fit([X_train['left'], X_train['right']], Y_train,
                             batch_size=batch_size, epochs=n_epoch,
