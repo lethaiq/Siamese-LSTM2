@@ -3,6 +3,8 @@ import re
 from tensorflow.python.keras import backend as K
 from tensorflow.python.keras.layers import Layer
 from tensorflow.python.keras.preprocessing.sequence import pad_sequences
+from gensim.scripts.glove2word2vec import glove2word2vec
+>
 
 from nltk.corpus import stopwords
 from gensim.models import KeyedVectors
@@ -71,7 +73,11 @@ def make_w2v_embeddings(df, embedding_dim=300, empty_w2v=False):
     if empty_w2v:
         word2vec = EmptyWord2Vec
     else:
-        word2vec = KeyedVectors.load_word2vec_format("../quora/data/GoogleNews-vectors-negative300.bin.gz", binary=True)
+        glove_input_file = "../quora/data/glove.txt"
+        glove2word2vec(glove_input_file, word2vec_output_file)
+        word2vec_output_file = "../quora/data/gloveword2vec.txt"
+        # word2vec = KeyedVectors.load_word2vec_format("../quora/data/GoogleNews-vectors-negative300.bin.gz", binary=True)
+        word2vec.load_word2vec_format(word2vec_output_file, binary=False)
         # word2vec = gensim.models.word2vec.Word2Vec.load("./data/Quora-Question-Pairs.w2v").wv
 
     for index, row in df.iterrows():

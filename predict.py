@@ -67,7 +67,5 @@ prediction = model.predict([X_validation['left'], X_validation['right']], verbos
 mse = mean_squared_error(Y_validation, prediction)
 prediction_int = prediction >= 0.5
 prediction_int = np.array(prediction_int).astype(int)
-print(prediction_int)
-
 acc = accuracy_score(Y_validation, prediction_int, normalize=True)
 print(mse, acc)
