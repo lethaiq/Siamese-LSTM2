@@ -31,7 +31,7 @@ embedding_dim = 300
 max_seq_length = 20
 use_w2v = True
 
-train_df, embeddings = make_w2v_embeddings(train_df, embedding_dim=embedding_dim, empty_w2v=not use_w2v)
+# train_df, embeddings = make_w2v_embeddings(train_df, embedding_dim=embedding_dim, empty_w2v=not use_w2v)
 # pickle.dump([train_df, embeddings], open('../quora/data/embeddings_glove.pkl','wb'))
 train_df, embeddings = pickle.load(open('../quora/data/embeddings_glove.pkl','rb'))
 
