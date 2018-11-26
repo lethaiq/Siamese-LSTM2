@@ -44,6 +44,9 @@ training_size = len(train_df) - validation_size
 
 X_train, X_validation, Y_train, Y_validation = train_test_split(X, Y, test_size=validation_size, random_state=22)
 
+print(X_train.get_values())
+print(len(X_train.get_values()))
+
 X_train = ["{} {}".format(i) for i in X_train.get_values()]
 X_validation = ["{} {}".format(i) for i in X_validation.get_values()]
 
