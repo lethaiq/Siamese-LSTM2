@@ -7,7 +7,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 from sklearn.model_selection import train_test_split
-
+from keras.callbacks import EarlyStopping, ModelCheckpoint
 import tensorflow as tf
 
 from tensorflow.python.keras.models import Model, Sequential
@@ -95,9 +95,11 @@ shared_model.summary()
 
 # Start trainings
 training_start_time = time()
+callbacks = [EarlyStopping(monitor='val_loss', patience=4)]
 malstm_trained = model.fit([X_train['left'], X_train['right']], Y_train,
                            batch_size=batch_size, epochs=n_epoch,
-                           validation_data=([X_validation['left'], X_validation['right']], Y_validation))
+                           validation_data=([X_validation['left'], X_validation['right']], Y_validation, ), callbacks=callbacks)
+
 training_end_time = time()
 print("Training time finished.\n%d epochs in %12.2f" % (n_epoch,
                                                         training_end_time - training_start_time))
