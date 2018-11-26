@@ -6,6 +6,7 @@ from util import make_w2v_embeddings
 from util import split_and_zero_padding
 from util import ManDist
 
+import pickle
 
 # File paths
 TRAIN_CSV = '../quora/data/train.csv'
@@ -20,7 +21,8 @@ embedding_dim = 300
 max_seq_length = 20
 use_w2v = True
 
-train_df, embeddings = make_w2v_embeddings(train_df, embedding_dim=embedding_dim, empty_w2v=not use_w2v)
+# train_df, embeddings = make_w2v_embeddings(train_df, embedding_dim=embedding_dim, empty_w2v=not use_w2v)
+train_df, embeddings = pickle.load(open('./data/embeddings.pkl','rb'))
 
 # Split to train validation
 validation_size = int(len(train_df) * 0.1)
