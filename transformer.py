@@ -24,7 +24,7 @@ import keras
 from keras import layers
 from keras.models import Model
 import keras.backend as K
-
+module_url = "https://tfhub.dev/google/universal-sentence-encoder-large/3"
 # File paths
 TRAIN_CSV = '../quora/data/train.csv'
 
