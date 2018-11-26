@@ -16,6 +16,7 @@ from tensorflow.python.keras.layers import Input, Embedding, LSTM, GRU, Conv1D, 
 from util import make_w2v_embeddings
 from util import split_and_zero_padding
 from util import ManDist
+import pickle
 
 # File paths
 TRAIN_CSV = '../quora/data/train.csv'
