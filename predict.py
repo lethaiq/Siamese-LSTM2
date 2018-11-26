@@ -69,3 +69,10 @@ prediction_int = prediction >= 0.5
 prediction_int = np.array(prediction_int).astype(int)
 acc = accuracy_score(Y_validation, prediction_int, normalize=True)
 print(mse, acc)
+
+prediction = model.predict([X_train['left'], X_train['right']], verbose=1, batch_size=128)
+mse = mean_squared_error(Y_train, prediction)
+prediction_int = prediction >= 0.5
+prediction_int = np.array(prediction_int).astype(int)
+acc = accuracy_score(Y_train, prediction_int, normalize=True)
+print(mse, acc)
