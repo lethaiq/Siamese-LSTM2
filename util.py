@@ -4,7 +4,6 @@ from tensorflow.python.keras import backend as K
 from tensorflow.python.keras.layers import Layer
 from tensorflow.python.keras.preprocessing.sequence import pad_sequences
 from gensim.scripts.glove2word2vec import glove2word2vec
->
 
 from nltk.corpus import stopwords
 from gensim.models import KeyedVectors
