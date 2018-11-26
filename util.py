@@ -76,6 +76,7 @@ def make_w2v_embeddings(df, embedding_dim=300, empty_w2v=False):
         word2vec_output_file = "../quora/data/gloveword2vec.txt"
         glove2word2vec(glove_input_file, word2vec_output_file)
         word2vec = KeyedVectors.load_word2vec_format(word2vec_output_file, binary=False)
+        
         # word2vec = KeyedVectors.load_word2vec_format("../quora/data/GoogleNews-vectors-negative300.bin.gz", binary=True)
         # word2vec = gensim.models.word2vec.Word2Vec.load("./data/Quora-Question-Pairs.w2v").wv
 

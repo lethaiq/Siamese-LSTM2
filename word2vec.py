@@ -9,8 +9,8 @@ def extract_questions():
     """
     Extract questions for making word2vec model.
     """
-    df1 = pd.read_csv("./data/train.csv")
-    df2 = pd.read_csv("./data/test.csv")
+    df1 = pd.read_csv("../quora/data/train.csv")
+    df2 = pd.read_csv("../quora/data/test.csv")
 
     for dataset in [df1, df2]:
         for i, row in dataset.iterrows():
