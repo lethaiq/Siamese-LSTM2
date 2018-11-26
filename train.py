@@ -18,7 +18,7 @@ from util import split_and_zero_padding
 from util import ManDist
 
 # File paths
-TRAIN_CSV = './data/train.csv'
+TRAIN_CSV = '../quora/data/train.csv'
 
 # Load training set
 train_df = pd.read_csv(TRAIN_CSV)
