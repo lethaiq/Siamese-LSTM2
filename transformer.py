@@ -28,6 +28,7 @@ import keras.backend as K
 # File paths
 TRAIN_CSV = '../quora/data/train.csv'
 
+
 # Load training set
 train_df = pd.read_csv(TRAIN_CSV)
 for q in ['question1', 'question2']:
@@ -35,6 +36,11 @@ for q in ['question1', 'question2']:
 
 X = train_df[['question1_n', 'question2_n']]
 Y = train_df['is_duplicate']
+
+# Split to train validation
+validation_size = int(len(train_df) * 0.1)
+training_size = len(train_df) - validation_size
+
 
 X_train, X_validation, Y_train, Y_validation = train_test_split(X, Y, test_size=validation_size, random_state=22)
 
