@@ -20,7 +20,7 @@ from util import split_and_zero_padding
 from util import ManDist
 import pickle
 
-from keras.layers import Input, Lambda, Dense
+from keras import layers
 from keras.models import Model
 import keras.backend as K
 
@@ -81,10 +81,8 @@ module_url = "https://tfhub.dev/google/universal-sentence-encoder-large/3"
 # Import the Universal Sentence Encoder's TF Hub module
 embed = hub.Module(module_url)
 
-
 x = Sequential()
-embedding = layers.Lambda(UniversalEmbedding,
-	output_shape=(embed_size,), trainable=False)
+embedding = layers.Lambda(UniversalEmbedding, output_shape=(300,), trainable=False)
 x.add(embedding))
 x.add(LSTM(n_hidden))
 
@@ -105,15 +103,20 @@ model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), m
 model.summary()
 shared_model.summary()
 
-# Start trainings
-training_start_time = time()
-callbacks = [EarlyStopping(monitor='val_loss', patience=4)]
-malstm_trained = model.fit([X_train['left'], X_train['right']], Y_train,
-                           batch_size=batch_size, epochs=n_epoch,
-                           validation_data=([X_validation['left'], X_validation['right']], Y_validation, ), callbacks=callbacks)
+with tf.Session() as session:
+    K.set_session(session)
+    session.run(tf.global_variables_initializer())  
+    session.run(tf.tables_initializer())
 
-training_end_time = time()
-print("Training time finished.\n%d epochs in %12.2f" % (n_epoch,
-                                                        training_end_time - training_start_time))
+    # Start trainings
+    training_start_time = time()
+    callbacks = [EarlyStopping(monitor='val_loss', patience=4)]
+    malstm_trained = model.fit([X_train['left'], X_train['right']], Y_train,
+                            batch_size=batch_size, epochs=n_epoch,
+                            validation_data=([X_validation['left'], X_validation['right']], Y_validation, ), callbacks=callbacks)
 
-model.save('./data/SiameseLSTM.h5')
+    training_end_time = time()
+    print("Training time finished.\n%d epochs in %12.2f" % (n_epoch,
+                                                            training_end_time - training_start_time))
+
+    model.save('./data/SiameseLSTM.h5')
