@@ -19,6 +19,7 @@ from util import make_w2v_embeddings
 from util import split_and_zero_padding
 from util import ManDist
 import pickle
+import keras
 
 from keras import layers
 from keras.models import Model
@@ -82,7 +83,7 @@ module_url = "https://tfhub.dev/google/universal-sentence-encoder-large/3"
 embed = hub.Module(module_url)
 
 x = Sequential()
-embedding = layers.Lambda(UniversalEmbedding, output_shape=(300,), trainable=False)
+embedding = keras.layers.core.Lambda(UniversalEmbedding, output_shape=(300,), trainable=False)
 x.add(embedding)
 x.add(LSTM(n_hidden))
 
