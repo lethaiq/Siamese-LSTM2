@@ -47,8 +47,8 @@ X_train, X_validation, Y_train, Y_validation = train_test_split(X, Y, test_size=
 print(X_train.get_values())
 print(len(X_train.get_values()))
 
-X_train = ["{} {}".format(i) for i in X_train.get_values()]
-X_validation = ["{} {}".format(i) for i in X_validation.get_values()]
+X_train = ["{} {}".format(i[0], i[1]) for i in X_train.get_values()]
+X_validation = ["{} {}".format(i[0], i[1]) for i in X_validation.get_values()]
 
 # Convert labels to their numpy representations
 Y_train = Y_train.values
