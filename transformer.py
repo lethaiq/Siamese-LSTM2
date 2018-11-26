@@ -44,8 +44,6 @@ training_size = len(train_df) - validation_size
 
 X_train, X_validation, Y_train, Y_validation = train_test_split(X, Y, test_size=validation_size, random_state=22)
 
-print(X_train.get_values())
-print(len(X_train.get_values()))
 
 X_train = ["{} {}".format(i[0], i[1]) for i in X_train.get_values()]
 X_validation = ["{} {}".format(i[0], i[1]) for i in X_validation.get_values()]
@@ -59,3 +57,14 @@ embed = hub.Module(module_url)
 def UniversalEmbedding(x):
     return embed(tf.squeeze(tf.cast(x, tf.string)), 
         signature="default", as_dict=True)["default"]
+
+input_text = layers.Input(shape=(1,), dtype=tf.string)
+embedding = layers.Lambda(UniversalEmbedding,
+	output_shape=(300,))(input_text)
+dense = layers.Dense(256, activation='relu')(embedding)
+pred = layers.Dense(2, activation='softmax')(dense)
+model = Model(inputs=[input_text], outputs=pred)
+model.compile(loss='categorical_crossentropy', 
+	optimizer='adam', metrics=['accuracy'])
+
+print(model.summary())
