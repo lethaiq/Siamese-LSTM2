@@ -60,5 +60,5 @@ assert len(X_train['left']) == len(Y_train)
 model = tf.keras.models.load_model('./data/SiameseLSTM.h5', custom_objects={'ManDist': ManDist})
 model.summary()
 
-prediction = model.predict([X_validation['left'], X_validation['right']], verbose=1)
+prediction = model.predict([X_validation['left'], X_validation['right']], verbose=1, batch_size=32)
 print(prediction)
