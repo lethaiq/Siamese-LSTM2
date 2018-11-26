@@ -36,7 +36,8 @@ max_seq_length = 20
 use_w2v = True
 
 # train_df, embeddings = make_w2v_embeddings(train_df, embedding_dim=embedding_dim, empty_w2v=not use_w2v)
-train_df, embeddings = pickle.load(open('./data/embeddings.pkl','rb'))
+# train_df, embeddings = pickle.load(open('./data/embeddings.pkl','rb'))
+train_df, embeddings = pickle.load(open('../quora/data/embeddings_glove.pkl','rb'))
 
 # Split to train validation
 validation_size = int(len(train_df) * 0.1)
