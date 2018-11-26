@@ -7,6 +7,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import accuracy_score
 
 import tensorflow as tf
 
@@ -42,7 +44,7 @@ training_size = len(train_df) - validation_size
 X = train_df[['question1_n', 'question2_n']]
 Y = train_df['is_duplicate']
 
-X_train, X_validation, Y_train, Y_validation = train_test_split(X, Y, test_size=validation_size)
+X_train, X_validation, Y_train, Y_validation = train_test_split(X, Y, test_size=validation_size, random_state=22)
 
 X_train = split_and_zero_padding(X_train, max_seq_length)
 X_validation = split_and_zero_padding(X_validation, max_seq_length)
@@ -60,5 +62,8 @@ assert len(X_train['left']) == len(Y_train)
 model = tf.keras.models.load_model('./data/SiameseLSTM.h5', custom_objects={'ManDist': ManDist})
 model.summary()
 
-prediction = model.predict([X_validation['left'], X_validation['right']], verbose=1, batch_size=32)
-print(prediction)
+prediction = model.predict([X_validation['left'], X_validation['right']], verbose=1, batch_size=128)
+mse = mean_squared_error(Y_validation, prediction)
+prediction_int = prediction >= 0.5
+prediction_int = np.array(prediction_int, type=int)
+acc = accuracy_score(Y_validation, prediction_int, normalize=False)

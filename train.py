@@ -39,7 +39,7 @@ training_size = len(train_df) - validation_size
 X = train_df[['question1_n', 'question2_n']]
 Y = train_df['is_duplicate']
 
-X_train, X_validation, Y_train, Y_validation = train_test_split(X, Y, test_size=validation_size)
+X_train, X_validation, Y_train, Y_validation = train_test_split(X, Y, test_size=validation_size, random_state=22)
 
 X_train = split_and_zero_padding(X_train, max_seq_length)
 X_validation = split_and_zero_padding(X_validation, max_seq_length)
