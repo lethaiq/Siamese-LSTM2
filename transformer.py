@@ -62,8 +62,7 @@ def UniversalEmbedding(x):
 
 input_text = layers.Input(shape=(1,), dtype=tf.string)
 embedding = layers.Lambda(UniversalEmbedding, output_shape=(512,))(input_text)
-dense = layers.Dense(256, activation='relu')(embedding)
-lstm = LSTM(50)(Reshape((-1, 1))(embedding))
+lstm = LSTM(50)(embedding)
 pred = layers.Dense(1, activation='softmax')(lstm)
 model = Model(inputs=[input_text], outputs=pred)
 model.compile(loss='binary_crossentropy', 
