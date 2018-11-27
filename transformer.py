@@ -91,7 +91,7 @@ X_train = np.expand_dims(np.concatenate(X_train, axis=0), 2)
 X_validation = pickle.load(open('./data/X_valid_use.pkl', 'rb'))
 X_validation = np.expand_dims(np.concatenate(X_validation, axis=0), 2)
 
-
+print(X_train.shape)
 #   X_validation_embed = session.run(embed(X_validation))
 
 x = Sequential()
@@ -99,8 +99,8 @@ x.add(LSTM(50))
 shared_model = x
 
 # The visible layer
-left_input = Input(shape=(512,), dtype='float')
-right_input = Input(shape=(512,), dtype='float')
+left_input = Input(shape=(512,1), dtype='float')
+right_input = Input(shape=(512,1), dtype='float')
 
 # Pack it all up into a Manhattan Distance model
 malstm_distance = ManDist()([shared_model(left_input), shared_model(right_input)])
