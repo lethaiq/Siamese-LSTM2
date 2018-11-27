@@ -95,12 +95,18 @@ output = embed(messages)
 # 	print('done')
 
 X_train = pickle.load(open('./data/X_train_use.pkl', 'rb'))
-X_train['left'] = np.expand_dims(np.concatenate(X_train['left'], axis=0), 2)
-X_train['right'] = np.expand_dims(np.concatenate(X_train['right'], axis=0), 2)
-X_validation = pickle.load(open('./data/X_valid_use.pkl', 'rb'))
-X_validation['left'] = np.expand_dims(np.concatenate(X_validation['left'], axis=0), 2)
-X_validation['right'] = np.expand_dims(np.concatenate(X_validation['right'], axis=0), 2)
+# X_train['left'] = np.expand_dims(np.concatenate(X_train['left'], axis=0), 2)
+# X_train['right'] = np.expand_dims(np.concatenate(X_train['right'], axis=0), 2)
 
+X_train['left'] = np.concatenate(X_train['left'], axis=0)
+X_train['right'] = np.concatenate(X_train['right'], axis=0)
+
+X_validation = pickle.load(open('./data/X_valid_use.pkl', 'rb'))
+# X_validation['left'] = np.expand_dims(np.concatenate(X_validation['left'], axis=0), 2)
+# X_validation['right'] = np.expand_dims(np.concatenate(X_validation['right'], axis=0), 2)
+
+X_validation['left'] = np.concatenate(X_validation['left'], axis=0)
+X_validation['right'] = np.concatenate(X_validation['right'], axis=0)
 
 # x = Sequential()
 # x.add(Conv1D(512, kernel_size=5, activation='relu'))
@@ -122,8 +128,9 @@ X_validation['right'] = np.expand_dims(np.concatenate(X_validation['right'], axi
 # model = Model(inputs=[left_input, right_input], outputs=[malstm_distance])
 
 model = Sequential()
-model.add(Conv1D(512, kernel_size=5, activation='relu'))
-model.add(GlobalMaxPool1D())
+# model.add(Conv1D(512, kernel_size=5, activation='relu'))
+# model.add(GlobalMaxPool1D())
+model.add(Dense(500, activation='relu'))
 model.add(Dense(250, activation='relu'))
 model.add(Dense(1, activation='sigmoid'))
 model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
