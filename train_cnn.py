@@ -72,13 +72,9 @@ n_hidden = 50
 # Define the shared model
 x = Sequential()
 x.add(Embedding(len(embeddings), embedding_dim, weights=[embeddings], input_shape=(max_seq_length*2,), trainable=False))
-x.add(Conv1D(256, kernel_size=5, activation='relu'))
-x.add(MaxPool1D(5))
+x.add(Conv1D(512, kernel_size=5, activation='relu'))
 x.add(GlobalMaxPool1D())
 x.add(Dense(250, activation='relu'))
-x.add(Dropout(0.5))
-x.add(Dense(150, activation='relu'))
-x.add(Dropout(0.5))
 x.add(Dense(1, activation='sigmoid'))
 x.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
 x.summary()
@@ -88,7 +84,7 @@ model = x
 try:
     # Start trainings
     training_start_time = time()
-    callbacks = [EarlyStopping(monitor='val_loss', patience=5)]
+    callbacks = [EarlyStopping(monitor='val_loss', patience=3)]
     malstm_trained = model.fit(X_train, Y_train,
                             batch_size=batch_size, epochs=n_epoch,
                             validation_data=(X_validation, Y_validation), callbacks=callbacks)
