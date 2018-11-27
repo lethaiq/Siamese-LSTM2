@@ -101,36 +101,33 @@ X_validation = pickle.load(open('./data/X_valid_use.pkl', 'rb'))
 X_validation['left'] = np.expand_dims(np.concatenate(X_validation['left'], axis=0), 2)
 X_validation['right'] = np.expand_dims(np.concatenate(X_validation['right'], axis=0), 2)
 
-print(X_train['left'].shape)
 
-# #   X_validation_embed = session.run(embed(X_validation))
+x = Sequential()
+x.add(LSTM(50))
+shared_model = x
 
-# x = Sequential()
-# x.add(LSTM(50))
-# shared_model = x
+# The visible layer
+left_input = Input(shape=(512,1), dtype='float')
+right_input = Input(shape=(512,1), dtype='float')
 
-# # The visible layer
-# left_input = Input(shape=(512,1), dtype='float')
-# right_input = Input(shape=(512,1), dtype='float')
+# Pack it all up into a Manhattan Distance model
+malstm_distance = ManDist()([shared_model(left_input), shared_model(right_input)])
+model = Model(inputs=[left_input, right_input], outputs=[malstm_distance])
+model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
 
-# # Pack it all up into a Manhattan Distance model
-# malstm_distance = ManDist()([shared_model(left_input), shared_model(right_input)])
-# model = Model(inputs=[left_input, right_input], outputs=[malstm_distance])
-# model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
+# Start trainings
+training_start_time = time()
+callbacks = [EarlyStopping(monitor='val_loss', patience=4)]
+malstm_trained = model.fit([X_train['left'], X_train['right']], Y_train,
+                           batch_size=32, epochs=100,
+                           validation_data=([X_validation['left'], X_validation['right']], Y_validation, ), callbacks=callbacks)
 
-# # Start trainings
-# training_start_time = time()
-# callbacks = [EarlyStopping(monitor='val_loss', patience=4)]
-# malstm_trained = model.fit([X_train['left'], X_train['right']], Y_train,
-#                            batch_size=batch_size, epochs=n_epoch,
-#                            validation_data=([X_validation['left'], X_validation['right']], Y_validation, ), callbacks=callbacks)
+training_end_time = time()
+print("Training time finished.\n%d epochs in %12.2f" % (n_epoch,
+                                                        training_end_time - training_start_time))
 
-# training_end_time = time()
-# print("Training time finished.\n%d epochs in %12.2f" % (n_epoch,
-#                                                         training_end_time - training_start_time))
+model.save('./data/SiameseLSTM_use.h5')
 
-# model.save('./data/SiameseLSTM_use.h5')
-
-# print(str(malstm_trained.history['val_acc'][-1])[:6] +
-#       "(max: " + str(max(malstm_trained.history['val_acc']))[:6] + ")")
-# print("Done.")
+print(str(malstm_trained.history['val_acc'][-1])[:6] +
+      "(max: " + str(max(malstm_trained.history['val_acc']))[:6] + ")")
+print("Done.")
