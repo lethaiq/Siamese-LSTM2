@@ -89,6 +89,7 @@ output = embed(messages)
 # 	print('done')
 
 X_train = pickle.load(open('./data/X_train_use.pkl', 'rb'))
+X_train = np.concatenate(X_train, axis=0)
 print(X_train.shape)
 print(X_train[0].shape)
 
