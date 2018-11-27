@@ -138,7 +138,7 @@ X_train = np.array([np.concatenate((X_train['left'][i], X_train['right'][i])) fo
 X_validation = np.array([np.concatenate((X_validation['left'][i], X_validation['right'][i])) for i in range(len(X_validation['left']))])
 X_test = np.array([np.concatenate((X_test['left'][i], X_test['right'][i])) for i in range(len(X_test['left']))])
 
-model = tf.keras.models.load_model('./data/SiameseLSTM_USE_CNN.h5')
+model = tf.keras.models.load_model('./data/SiameseLSTM_USE_fcn.h5')
 model.summary()
 
 prediction = model.predict(X_test, verbose=1, batch_size=128)
