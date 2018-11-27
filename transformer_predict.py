@@ -72,46 +72,46 @@ with tf.Session() as session:
 	session.run(tf.global_variables_initializer())
 	session.run(tf.tables_initializer())
 	
-	X_test_embed = {}
-	X_test_embed['left'] = []
-	X_test_embed['right'] = []
-	for i in range(0, len(X_test), 1024):
-		# print(X_train['question2_n'][i:i+1024])
-		x_left = session.run(output, {messages: X_test['question1_n'][i:i+1024]})
-		x_right = session.run(output, {messages: X_test['question2_n'][i:i+1024]})
-		X_test_embed['left'].append(x_left)
-		X_test_embed['right'].append(x_right)
-		print(i)
-
-	pickle.dump(X_test_embed, open('./data/X_test_use.pkl','wb'))
-	print('done')
-
-	# X_train_embed = {}
-	# X_train_embed['left'] = []
-	# X_train_embed['right'] = []
-	# for i in range(0, len(X_train), 1024):
+	# X_test_embed = {}
+	# X_test_embed['left'] = []
+	# X_test_embed['right'] = []
+	# for i in range(0, len(X_test), 1024):
 	# 	# print(X_train['question2_n'][i:i+1024])
-	# 	x_left = session.run(output, {messages: X_train['question1_n'][i:i+1024]})
-	# 	x_right = session.run(output, {messages: X_train['question2_n'][i:i+1024]})
-	# 	X_train_embed['left'].append(x_left)
-	# 	X_train_embed['right'].append(x_right)
+	# 	x_left = session.run(output, {messages: X_test['question1_n'][i:i+1024]})
+	# 	x_right = session.run(output, {messages: X_test['question2_n'][i:i+1024]})
+	# 	X_test_embed['left'].append(x_left)
+	# 	X_test_embed['right'].append(x_right)
 	# 	print(i)
 
-	# pickle.dump(X_train_embed, open('./data/X_train_use.pkl','wb'))
+	# pickle.dump(X_test_embed, open('./data/X_test_use.pkl','wb'))
 	# print('done')
 
-	X_valid_embed = {}
-	X_valid_embed['left'] = []
-	X_valid_embed['right'] = []
-	for i in range(0, len(X_validation), 1024):
-		x_left = session.run(output, {messages: X_validation['question1_n'][i:i+1024]})
-		x_right = session.run(output, {messages: X_validation['question2_n'][i:i+1024]})
-		X_valid_embed['left'].append(x_left)
-		X_valid_embed['right'].append(x_right)
-		print(i)
+	# # X_train_embed = {}
+	# # X_train_embed['left'] = []
+	# # X_train_embed['right'] = []
+	# # for i in range(0, len(X_train), 1024):
+	# # 	# print(X_train['question2_n'][i:i+1024])
+	# # 	x_left = session.run(output, {messages: X_train['question1_n'][i:i+1024]})
+	# # 	x_right = session.run(output, {messages: X_train['question2_n'][i:i+1024]})
+	# # 	X_train_embed['left'].append(x_left)
+	# # 	X_train_embed['right'].append(x_right)
+	# # 	print(i)
 
-	pickle.dump(X_valid_embed, open('./data/X_valid_use.pkl','wb'))
-	print('done')
+	# # pickle.dump(X_train_embed, open('./data/X_train_use.pkl','wb'))
+	# # print('done')
+
+	# X_valid_embed = {}
+	# X_valid_embed['left'] = []
+	# X_valid_embed['right'] = []
+	# for i in range(0, len(X_validation), 1024):
+	# 	x_left = session.run(output, {messages: X_validation['question1_n'][i:i+1024]})
+	# 	x_right = session.run(output, {messages: X_validation['question2_n'][i:i+1024]})
+	# 	X_valid_embed['left'].append(x_left)
+	# 	X_valid_embed['right'].append(x_right)
+	# 	print(i)
+
+	# pickle.dump(X_valid_embed, open('./data/X_valid_use.pkl','wb'))
+	# print('done')
 
 X_train = pickle.load(open('./data/X_train_use.pkl', 'rb'))
 X_train['left'] = np.expand_dims(np.concatenate(X_train['left'], axis=0), 2)
