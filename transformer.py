@@ -50,8 +50,8 @@ Y_train = Y_train.values
 Y_validation = Y_validation.values
 
 # Make sure everything is ok
-assert X_train['left'].shape == X_train['right'].shape
-assert len(X_train['left']) == len(Y_train)
+assert X_train['question1_n'].shape == X_train['question2_n'].shape
+assert len(X_train['question1_n']) == len(Y_train)
 
 def UniversalEmbedding(x):
 	return embed(tf.squeeze(tf.cast(x, tf.string)), 
