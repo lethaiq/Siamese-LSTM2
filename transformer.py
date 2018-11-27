@@ -55,21 +55,22 @@ X_validation = np.array(["{} {}".format(i[0], i[1]) for i in X_validation.get_va
 Y_train = Y_train.values
 Y_validation = Y_validation.values
 
-embed = hub.Module(module_url)
-
 def UniversalEmbedding(x):
 	return embed(tf.squeeze(tf.cast(x, tf.string)), 
 		signature="default", as_dict=True)["default"]
 
+embed = hub.Module(module_url)
+messages = tf.placeholder(dtype=tf.string, shape=[None])
+output = embed(messages)
 
 with tf.Session() as session:
 	K.set_session(session)
 	session.run(tf.global_variables_initializer())
 	session.run(tf.tables_initializer())
-
+	
 	X_train_embed = []
-	for i in range(0, len(X_train), 32):
-		x = session.run(embed(X_train[i:i+32]))
+	for i in range(0, len(X_train), 1024):
+		x = session.run(output, {messages: X_train[i:i+1024]})
 		X_train_embed.append(x)
 		print(i)
 
