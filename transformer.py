@@ -60,22 +60,40 @@ def UniversalEmbedding(x):
     return embed(tf.squeeze(tf.cast(x, tf.string)), 
         signature="default", as_dict=True)["default"]
 
-input_text = layers.Input(shape=(1,), dtype=tf.string)
-embedding = layers.Lambda(UniversalEmbedding, output_shape=(512,))(input_text)
-# embedding = layers.Lambda(lambda ipt: K.expand_dims(ipt, 1))(embedding)
-dense = GRU(50)(embedding)
-pred = layers.Dense(1, activation='softmax')(dense)
-model = Model(inputs=[input_text], outputs=pred)
-model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-
-print(model.summary())
 
 with tf.Session() as session:
   K.set_session(session)
   session.run(tf.global_variables_initializer())
   session.run(tf.tables_initializer())
-  history = model.fit(X_train, Y_train,
-            validation_data=(X_validation, Y_validation),
-            epochs=10,
-            batch_size=64)
-  model.save('./data/SiameseLSTM_use.h5')
+  X_train_embed = session.run(embed(X_train))
+  X_validation_embed = session.run(embed(X_validation))
+  
+
+# x = Sequential()
+# x.add(Embedding(len(embeddings), embedding_dim,
+#                 weights=[embeddings], input_shape=(max_seq_length,), trainable=False))
+# # CNN
+# # x.add(Conv1D(250, kernel_size=5, activation='relu'))
+# # x.add(GlobalMaxPool1D())
+# # x.add(Dense(250, activation='relu'))
+# # x.add(Dropout(0.3))
+# # x.add(Dense(1, activation='sigmoid'))
+# # LSTM
+# x.add(LSTM(n_hidden))
+
+# shared_model = x
+
+# # The visible layer
+# left_input = Input(shape=(max_seq_length,), dtype='int32')
+# right_input = Input(shape=(max_seq_length,), dtype='int32')
+
+# # Pack it all up into a Manhattan Distance model
+# malstm_distance = ManDist()([shared_model(left_input), shared_model(right_input)])
+# model = Model(inputs=[left_input, right_input], outputs=[malstm_distance])
+
+# if gpus >= 2:
+#     # `multi_gpu_model()` is a so quite buggy. it breaks the saved model.
+#     model = tf.keras.utils.multi_gpu_model(model, gpus=gpus)
+# model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
+# model.summary()
+# shared_model.summary()
