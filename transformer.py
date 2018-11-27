@@ -119,7 +119,7 @@ model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), m
 training_start_time = time()
 callbacks = [EarlyStopping(monitor='val_loss', patience=4)]
 malstm_trained = model.fit([X_train['left'], X_train['right']], Y_train,
-                           batch_size=32, epochs=100,
+                           batch_size=1024, epochs=100,
                            validation_data=([X_validation['left'], X_validation['right']], Y_validation, ), callbacks=callbacks)
 
 training_end_time = time()
