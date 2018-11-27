@@ -34,7 +34,7 @@ TRAIN_CSV = '../quora/data/train.csv'
 # Load training set
 train_df = pd.read_csv(TRAIN_CSV)
 for q in ['question1', 'question2']:
-    train_df[q + '_n'] = train_df[q]
+	train_df[q + '_n'] = train_df[q]
 
 X = train_df[['question1_n', 'question2_n']]
 Y = train_df['is_duplicate']
@@ -57,19 +57,21 @@ Y_validation = Y_validation.values
 embed = hub.Module(module_url)
 
 def UniversalEmbedding(x):
-    return embed(tf.squeeze(tf.cast(x, tf.string)), 
-        signature="default", as_dict=True)["default"]
+	return embed(tf.squeeze(tf.cast(x, tf.string)), 
+		signature="default", as_dict=True)["default"]
 
 
 with tf.Session() as session:
-  K.set_session(session)
-  session.run(tf.global_variables_initializer())
-  session.run(tf.tables_initializer())
+	K.set_session(session)
+	session.run(tf.global_variables_initializer())
+	session.run(tf.tables_initializer())
 
-  X_train_embed = []
-  for i in range(0, len(X_train), 32):
-      X_train_embed.append(session.run(embed(X_train[i:i+32])))
-      print(len(X_train_embed))
+	X_train_embed = []
+	for i in range(0, len(X_train), 128):
+		x = session.run(embed(X_train[i:i+128]))
+		X_train_embed.append(x)
+		print(x)
+
 #   X_validation_embed = session.run(embed(X_validation))
   
 
