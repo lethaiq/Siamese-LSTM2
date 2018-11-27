@@ -120,6 +120,7 @@ X_validation['right'] = np.expand_dims(np.concatenate(X_validation['right'], axi
 # Pack it all up into a Manhattan Distance model
 # malstm_distance = ManDist()([shared_model(left_input), shared_model(right_input)])
 # model = Model(inputs=[left_input, right_input], outputs=[malstm_distance])
+
 model = Sequential()
 model.add(Conv1D(512, kernel_size=5, activation='relu'))
 model.add(GlobalMaxPool1D())
@@ -136,12 +137,14 @@ callbacks = [EarlyStopping(monitor='val_loss', patience=3)]
 # malstm_trained = model.fit([X_train['left'], X_train['right']], Y_train,
 #                            batch_size=1024, epochs=5,
 #                            validation_data=([X_validation['left'], X_validation['right']], Y_validation, ), callbacks=callbacks)
-malstm_trained = model.fit(X_train, Y_train, batch_size=1024, epochs=100, validation_data=(X_validation, Y_validation), callbacks=callbacks)
-training_end_time = time()
-print("Training time finished.\n%d epochs in %12.2f" % (50,
-                                                        training_end_time - training_start_time))
-
-model.save('./data/SiameseLSTM_use.h5')
+try:
+	malstm_trained = model.fit(X_train, Y_train, batch_size=1024, epochs=100, validation_data=(X_validation, Y_validation), callbacks=callbacks)
+	training_end_time = time()
+	print("Training time finished.\n%d epochs in %12.2f" % (50,
+															training_end_time - training_start_time))
+except KeyboardInterrupt:
+	model.save('./data/SiameseLSTM_use.h5')
+	print('saved')
 
 print(str(malstm_trained.history['val_acc'][-1])[:6] +
       "(max: " + str(max(malstm_trained.history['val_acc']))[:6] + ")")

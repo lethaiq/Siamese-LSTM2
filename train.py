@@ -93,18 +93,19 @@ model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), m
 model.summary()
 shared_model.summary()
 
-# Start trainings
-training_start_time = time()
-callbacks = [EarlyStopping(monitor='val_loss', patience=4)]
-malstm_trained = model.fit([X_train['left'], X_train['right']], Y_train,
-                           batch_size=batch_size, epochs=n_epoch,
-                           validation_data=([X_validation['left'], X_validation['right']], Y_validation, ), callbacks=callbacks)
+try:
+    # Start trainings
+    training_start_time = time()
+    callbacks = [EarlyStopping(monitor='val_loss', patience=4)]
+    malstm_trained = model.fit([X_train['left'], X_train['right']], Y_train,
+                            batch_size=batch_size, epochs=n_epoch,
+                            validation_data=([X_validation['left'], X_validation['right']], Y_validation, ), callbacks=callbacks)
 
-training_end_time = time()
-print("Training time finished.\n%d epochs in %12.2f" % (n_epoch,
-                                                        training_end_time - training_start_time))
-
-model.save('./data/SiameseLSTM.h5')
+    training_end_time = time()
+    print("Training time finished.\n%d epochs in %12.2f" % (n_epoch,
+                                                            training_end_time - training_start_time))
+except KeyboardInterrupt:
+    model.save('./data/SiameseLSTM.h5')
 
 # Plot accuracy
 plt.subplot(211)
