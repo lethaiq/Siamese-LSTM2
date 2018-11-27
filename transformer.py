@@ -160,9 +160,9 @@ try:
 	training_end_time = time()
 	print("Training time finished.\n%d epochs in %12.2f" % (50,
 															training_end_time - training_start_time))
-	model.save('./data/SiameseLSTM_USE_fcn.h5')
+	model.save('./data/SiameseLSTM_USE_CNN.h5')
 except KeyboardInterrupt:
-	model.save('./data/SiameseLSTM_USE_fcn.h5')
+	model.save('./data/SiameseLSTM_USE_CNN.h5')
 	print('saved')
 
 print(str(malstm_trained.history['val_acc'][-1])[:6] +
