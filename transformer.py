@@ -57,7 +57,7 @@ Y_validation = Y_validation.values
 embed = hub.Module(module_url)
 
 def UniversalEmbedding(x):
-    return embed(tf.squeeze(tf.cast(x, tf.string)), 
+    return embed(np.squeeze(x), 
         signature="default", as_dict=True)["default"]
 
 input_text = layers.Input(shape=(1,), dtype=tf.string)
