@@ -101,4 +101,19 @@ malstm_distance = ManDist()([shared_model(left_input), shared_model(right_input)
 model = Model(inputs=[left_input, right_input], outputs=[malstm_distance])
 model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
 
-print(model.summary())
+Start trainings
+training_start_time = time()
+callbacks = [EarlyStopping(monitor='val_loss', patience=4)]
+malstm_trained = model.fit([X_train['left'], X_train['right']], Y_train,
+                           batch_size=batch_size, epochs=n_epoch,
+                           validation_data=([X_validation['left'], X_validation['right']], Y_validation, ), callbacks=callbacks)
+
+training_end_time = time()
+print("Training time finished.\n%d epochs in %12.2f" % (n_epoch,
+                                                        training_end_time - training_start_time))
+
+model.save('./data/SiameseLSTM_use.h5')
+
+print(str(malstm_trained.history['val_acc'][-1])[:6] +
+      "(max: " + str(max(malstm_trained.history['val_acc']))[:6] + ")")
+print("Done.")
