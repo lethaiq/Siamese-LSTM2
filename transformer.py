@@ -128,8 +128,8 @@ model.add(Dropout(0.3))
 model.add(Dense(1, activation='sigmoid'))
 model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
 
-X_train = [np.concatenate((i['left'], i['right'])) for i in X_train]
-X_validation = [np.concatenate((i['left'], i['right'])) for i in X_validation]
+X_train = [np.concatenate((X_train['left'][i], X_train['right'][i])) for i in range(len(X_train['left']))]
+X_validation = [np.concatenate((X_validation['left'][i], X_validation['right'][i])) for i in range(len(X_validation['left']))]
 
 # Start trainings
 training_start_time = time()
