@@ -125,7 +125,7 @@ model.add(Conv1D(512, kernel_size=5, activation='relu'))
 model.add(GlobalMaxPool1D())
 model.add(Dense(250, activation='relu'))
 model.add(Dense(1, activation='sigmoid'))
-model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
+model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(0.1), metrics=['accuracy'])
 
 X_train = np.array([np.concatenate((X_train['left'][i], X_train['right'][i])) for i in range(len(X_train['left']))])
 X_validation = np.array([np.concatenate((X_validation['left'][i], X_validation['right'][i])) for i in range(len(X_validation['left']))])
@@ -138,7 +138,7 @@ callbacks = [EarlyStopping(monitor='val_loss', patience=4)]
 #                            validation_data=([X_validation['left'], X_validation['right']], Y_validation, ), callbacks=callbacks)
 malstm_trained = model.fit(X_train, Y_train, batch_size=1024, epochs=50, validation_data=(X_validation, Y_validation), callbacks=callbacks)
 training_end_time = time()
-print("Training time finished.\n%d epochs in %12.2f" % (n_epoch,
+print("Training time finished.\n%d epochs in %12.2f" % (50,
                                                         training_end_time - training_start_time))
 
 model.save('./data/SiameseLSTM_use.h5')
