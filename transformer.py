@@ -68,8 +68,8 @@ with tf.Session() as session:
 	session.run(tf.tables_initializer())
 
 	X_train_embed = []
-	for i in range(0, len(X_train), 512):
-		x = session.run(embed(X_train[i:i+512]))
+	for i in range(0, len(X_train), 1024):
+		x = session.run(embed(X_train[i:i+1024]))
 		X_train_embed.append(x)
 		print(i)
 
@@ -77,8 +77,8 @@ with tf.Session() as session:
 	print('done')
 
 	X_valid_embed = []
-	for i in range(0, len(X_validation), 512):
-		x = session.run(embed(X_validation[i:i+512]))
+	for i in range(0, len(X_validation), 1024):
+		x = session.run(embed(X_validation[i:i+1024]))
 		X_valid_embed.append(x)
 		print(i)
 
