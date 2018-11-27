@@ -33,7 +33,7 @@ use_w2v = True
 
 # train_df, embeddings = make_w2v_embeddings(train_df, embedding_dim=embedding_dim, empty_w2v=not use_w2v)
 # pickle.dump([train_df, embeddings], open('../quora/data/embeddings_glove.pkl','wb'))
-train_df, embeddings = pickle.load(open('../quora/data/embeddings_glove.pkl','rb'))
+train_df, embeddings = pickle.load(open('../quora/data/embeddings.pkl','rb'))
 
 # Split to train validation
 validation_size = int(len(train_df) * 0.1)
@@ -42,7 +42,12 @@ training_size = len(train_df) - validation_size
 X = train_df[['question1_n', 'question2_n']]
 Y = train_df['is_duplicate']
 
-X_train, X_validation, Y_train, Y_validation = train_test_split(X, Y, test_size=validation_size, random_state=22)
+X_train, X_validation, Y_train, Y_validation = train_test_split(X, Y, test_size=0.2, random_state=22)
+X_validation, X_test, Y_validation, Y_test = train_test_split(X_validation, Y_validation, test_size=0.1, random_state=22)
+
+print(X_train.shape)
+print(X_validation.shape)
+print(X_test.shape)
 
 X_train = split_and_zero_padding(X_train, max_seq_length)
 X_validation = split_and_zero_padding(X_validation, max_seq_length)
@@ -86,9 +91,6 @@ right_input = Input(shape=(max_seq_length,), dtype='int32')
 malstm_distance = ManDist()([shared_model(left_input), shared_model(right_input)])
 model = Model(inputs=[left_input, right_input], outputs=[malstm_distance])
 
-if gpus >= 2:
-    # `multi_gpu_model()` is a so quite buggy. it breaks the saved model.
-    model = tf.keras.utils.multi_gpu_model(model, gpus=gpus)
 model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
 model.summary()
 shared_model.summary()
@@ -96,16 +98,15 @@ shared_model.summary()
 try:
     # Start trainings
     training_start_time = time()
-    callbacks = [EarlyStopping(monitor='val_loss', patience=4)]
+    callbacks = [EarlyStopping(monitor='val_loss', patience=3)]
     malstm_trained = model.fit([X_train['left'], X_train['right']], Y_train,
                             batch_size=batch_size, epochs=n_epoch,
                             validation_data=([X_validation['left'], X_validation['right']], Y_validation, ), callbacks=callbacks)
 
     training_end_time = time()
-    print("Training time finished.\n%d epochs in %12.2f" % (n_epoch,
-                                                            training_end_time - training_start_time))
+    print("Training time finished.\n%d epochs in %12.2f" % (n_epoch, training_end_time - training_start_time))
 except KeyboardInterrupt:
-    model.save('./data/SiameseLSTM.h5')
+    model.save('./data/SiameseLSTM_word2vec.h5')
 
 # Plot accuracy
 plt.subplot(211)
