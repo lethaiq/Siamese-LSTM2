@@ -84,7 +84,7 @@ try:
     callbacks = [EarlyStopping(monitor='val_loss', patience=3)]
     malstm_trained = model.fit(X_train, Y_train,
                             batch_size=batch_size, epochs=n_epoch,
-                            validation_data=(X_validation, Y_validation, ), callbacks=callbacks)
+                            validation_data=(X_validation, Y_validation), callbacks=callbacks)
 
     training_end_time = time()
     print("Training time finished.\n%d epochs in %12.2f" % (n_epoch,
