@@ -95,9 +95,11 @@ with tf.Session() as session:
 	print('done')
 
 X_train = pickle.load(open('./data/X_train_use.pkl', 'rb'))
-# X_train = np.expand_dims(np.concatenate(X_train, axis=0), 2)
+X_train['left'] = np.expand_dims(np.concatenate(X_train['left'], axis=0), 2)
+X_train['right'] = np.expand_dims(np.concatenate(X_train['right'], axis=0), 2)
 X_validation = pickle.load(open('./data/X_valid_use.pkl', 'rb'))
-# X_validation = np.expand_dims(np.concatenate(X_validation, axis=0), 2)
+X_validation['left'] = np.expand_dims(np.concatenate(X_validation['left'], axis=0), 2)
+X_validation['right'] = np.expand_dims(np.concatenate(X_validation['right'], axis=0), 2)
 
 
 # #   X_validation_embed = session.run(embed(X_validation))
