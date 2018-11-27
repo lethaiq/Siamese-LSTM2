@@ -29,6 +29,7 @@ TRAIN_CSV = '../quora/data/train.csv'
 
 # Load training set
 train_df = pd.read_csv(TRAIN_CSV)
+train_df = train_df.fillna('')
 for q in ['question1', 'question2']:
 	train_df[q + '_n'] = train_df[q]
 
