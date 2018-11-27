@@ -59,8 +59,7 @@ def UniversalEmbedding(x):
         signature="default", as_dict=True)["default"]
 
 input_text = layers.Input(shape=(1,), dtype=tf.string)
-embedding = layers.Lambda(UniversalEmbedding,
-	output_shape=(512,))(input_text)
+embedding = layers.Lambda(UniversalEmbedding, output_shape=(512,))(input_text)
 dense = layers.Dense(256, activation='relu')(embedding)
 pred = layers.Dense(2, activation='softmax')(dense)
 model = Model(inputs=[input_text], outputs=pred)
@@ -68,3 +67,14 @@ model.compile(loss='categorical_crossentropy',
 	optimizer='adam', metrics=['accuracy'])
 
 print(model.summary())
+
+with tf.Session() as session:
+  K.set_session(session)
+  session.run(tf.global_variables_initializer())
+  session.run(tf.tables_initializer())
+  history = model.fit(X_train, 
+            Y_train,
+            validation_data=(X_validation, Y_validation),
+            epochs=10,
+            batch_size=64)
+  model.save('./data/SiameseLSTM_use.h5')
