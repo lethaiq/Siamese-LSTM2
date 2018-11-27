@@ -91,7 +91,7 @@ X_train = np.array(X_train).flatten()
 X_validation = pickle.load(open('./data/X_valid_use.pkl', 'rb'))
 X_validation = np.array(X_validation).flatten()
 
-print(X_train.shape)
+print(X_train[0].shape)
 print(X_validation.shape)
 
 #   X_validation_embed = session.run(embed(X_validation))
