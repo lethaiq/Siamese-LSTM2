@@ -131,6 +131,8 @@ model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), m
 X_train = [np.concatenate((X_train['left'][i], X_train['right'][i])) for i in range(len(X_train['left']))]
 X_validation = [np.concatenate((X_validation['left'][i], X_validation['right'][i])) for i in range(len(X_validation['left']))]
 
+print(X_train.shape)
+
 # Start trainings
 training_start_time = time()
 callbacks = [EarlyStopping(monitor='val_loss', patience=4)]
