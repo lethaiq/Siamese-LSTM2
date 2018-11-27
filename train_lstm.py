@@ -90,9 +90,10 @@ try:
     training_end_time = time()
     print("Training time finished.\n%d epochs in %12.2f" % (n_epoch,
                                                             training_end_time - training_start_time))
-    model.save('./data/CNN_word2vec.h5')
+    model.save('./data/LSTM_word2vec.h5')
 except KeyboardInterrupt:
-    model.save('./data/CNN_word2vec.h5')
+    model.save('./data/LSTM_word2vec.h5')
+    print('saved')
 
 
 print(str(malstm_trained.history['val_acc'][-1])[:6] +
