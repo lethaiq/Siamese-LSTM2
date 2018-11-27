@@ -108,8 +108,9 @@ try:
                             validation_data=([X_validation['left'], X_validation['right']], Y_validation, ), callbacks=callbacks)
 
     training_end_time = time()
-    print("Training time finished.\n%d epochs in %12.2f" % (n_epoch, training_end_time - training_start_time))
     model.save('./data/SiameseLSTM_word2vec.h5')
+    print("Training time finished.\n%d epochs in %12.2f" % (n_epoch, training_end_time - training_start_time))
+    
 except KeyboardInterrupt:
     model.save('./data/SiameseLSTM_word2vec.h5')
 
