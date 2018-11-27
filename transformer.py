@@ -89,11 +89,13 @@ output = embed(messages)
 # 	print('done')
 
 X_train = pickle.load(open('./data/X_train_use.pkl', 'rb'))
-X_train = np.expand_dims(np.concatenate(X_train, axis=0), 2)
-X_validation = pickle.load(open('./data/X_valid_use.pkl', 'rb'))
-X_validation = np.expand_dims(np.concatenate(X_validation, axis=0), 2)
-
 print(X_train.shape)
+print(X_train[0].shape)
+
+# X_train = np.expand_dims(np.concatenate(X_train, axis=0), 2)
+X_validation = pickle.load(open('./data/X_valid_use.pkl', 'rb'))
+# X_validation = np.expand_dims(np.concatenate(X_validation, axis=0), 2)
+
 
 # #   X_validation_embed = session.run(embed(X_validation))
 
