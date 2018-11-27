@@ -99,32 +99,31 @@ output = embed(messages)
 # 	print('done')
 
 X_train = pickle.load(open('./data/X_train_use.pkl', 'rb'))
-# X_train['left'] = np.expand_dims(np.concatenate(X_train['left'], axis=0), 2)
-# X_train['right'] = np.expand_dims(np.concatenate(X_train['right'], axis=0), 2)
+X_train['left'] = np.expand_dims(np.concatenate(X_train['left'], axis=0), 2)
+X_train['right'] = np.expand_dims(np.concatenate(X_train['right'], axis=0), 2)
 
-X_train['left'] = np.concatenate(X_train['left'], axis=0)
-X_train['right'] = np.concatenate(X_train['right'], axis=0)
+# X_train['left'] = np.concatenate(X_train['left'], axis=0)
+# X_train['right'] = np.concatenate(X_train['right'], axis=0)
 
 X_validation = pickle.load(open('./data/X_valid_use.pkl', 'rb'))
-# X_validation['left'] = np.expand_dims(np.concatenate(X_validation['left'], axis=0), 2)
-# X_validation['right'] = np.expand_dims(np.concatenate(X_validation['right'], axis=0), 2)
+X_validation['left'] = np.expand_dims(np.concatenate(X_validation['left'], axis=0), 2)
+X_validation['right'] = np.expand_dims(np.concatenate(X_validation['right'], axis=0), 2)
 
-X_validation['left'] = np.concatenate(X_validation['left'], axis=0)
-X_validation['right'] = np.concatenate(X_validation['right'], axis=0)
+# X_validation['left'] = np.concatenate(X_validation['left'], axis=0)
+# X_validation['right'] = np.concatenate(X_validation['right'], axis=0)
 
 X_test = pickle.load(open('./data/X_test_use.pkl', 'rb'))
-# X_train['left'] = np.expand_dims(np.concatenate(X_train['left'], axis=0), 2)
-# X_train['right'] = np.expand_dims(np.concatenate(X_train['right'], axis=0), 2)
+X_test['left'] = np.expand_dims(np.concatenate(X_test['left'], axis=0), 2)
+X_test['right'] = np.expand_dims(np.concatenate(X_test['right'], axis=0), 2)
 
-X_test['left'] = np.concatenate(X_test['left'], axis=0)
-X_test['right'] = np.concatenate(X_test['right'], axis=0)
+# X_test['left'] = np.concatenate(X_test['left'], axis=0)
+# X_test['right'] = np.concatenate(X_test['right'], axis=0)
 
 X_train = np.array([np.concatenate((X_train['left'][i], X_train['right'][i])) for i in range(len(X_train['left']))])
 X_validation = np.array([np.concatenate((X_validation['left'][i], X_validation['right'][i])) for i in range(len(X_validation['left']))])
 X_test = np.array([np.concatenate((X_test['left'][i], X_test['right'][i])) for i in range(len(X_test['left']))])
 
-
-model = tf.keras.models.load_model('./data/SiameseLSTM_USE_fcn.h5')
+model = tf.keras.models.load_model('./data/SiameseLSTM_USE_CNN.h5')
 model.summary()
 
 prediction = model.predict(X_test, verbose=1, batch_size=128)
