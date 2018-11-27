@@ -68,8 +68,8 @@ with tf.Session() as session:
 	session.run(tf.tables_initializer())
 
 	X_train_embed = []
-	for i in range(0, len(X_train), 1024):
-		x = session.run(embed(X_train[i:i+1024]))
+	for i in range(0, len(X_train), 32):
+		x = session.run(embed(X_train[i:i+32]))
 		X_train_embed.append(x)
 		print(i)
 
