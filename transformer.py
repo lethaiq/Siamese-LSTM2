@@ -73,6 +73,17 @@ with tf.Session() as session:
 		print(i)
 
 	pickle.dump(X_train_embed, open('./data/X_train_use.pkl','wb'))
+	print('done')
+
+	X_valid_embed = []
+	for i in range(0, len(X_validation), 512):
+		x = session.run(embed(X_validation[i:i+512]))
+		X_valid_embed.append(x)
+		print(i)
+
+	pickle.dump(X_valid_embed, open('./data/X_valid_use.pkl','wb'))
+	print('done')
+
 
 #   X_validation_embed = session.run(embed(X_validation))
   
