@@ -96,11 +96,18 @@ output = embed(messages)
 # 	print('done')
 
 X_train = pickle.load(open('./data/X_train_use.pkl', 'rb'))
-X_train['left'] = np.expand_dims(np.concatenate(X_train['left'], axis=0), 2)
-X_train['right'] = np.expand_dims(np.concatenate(X_train['right'], axis=0), 2)
+# X_train['left'] = np.expand_dims(np.concatenate(X_train['left'], axis=0), 2)
+# X_train['right'] = np.expand_dims(np.concatenate(X_train['right'], axis=0), 2)
+
+X_train['left'] = np.concatenate(X_train['left'], axis=0)
+X_train['right'] = np.concatenate(X_train['right'], axis=0)
+
 X_validation = pickle.load(open('./data/X_valid_use.pkl', 'rb'))
-X_validation['left'] = np.expand_dims(np.concatenate(X_validation['left'], axis=0), 2)
-X_validation['right'] = np.expand_dims(np.concatenate(X_validation['right'], axis=0), 2)
+# X_validation['left'] = np.expand_dims(np.concatenate(X_validation['left'], axis=0), 2)
+# X_validation['right'] = np.expand_dims(np.concatenate(X_validation['right'], axis=0), 2)
+
+X_validation['left'] = np.concatenate(X_validation['left'], axis=0)
+X_validation['right'] = np.concatenate(X_validation['right'], axis=0)
 
 X_train = np.array([np.concatenate((X_train['left'][i], X_train['right'][i])) for i in range(len(X_train['left']))])
 X_validation = np.array([np.concatenate((X_validation['left'][i], X_validation['right'][i])) for i in range(len(X_validation['left']))])
