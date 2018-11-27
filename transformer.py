@@ -41,7 +41,8 @@ validation_size = int(len(train_df) * 0.1)
 training_size = len(train_df) - validation_size
 
 
-X_train, X_validation, Y_train, Y_validation = train_test_split(X, Y, test_size=validation_size, random_state=22)
+X_train, X_validation, Y_train, Y_validation = train_test_split(X, Y, test_size=0.2, random_state=22)
+X_validation, X_test, Y_validation, Y_test = train_test_split(X_validation, Y_validation, test_size=0.1, random_state=22)
 
 # X_train = split_and_zero_padding(X_train, max_seq_length)
 # X_validation = split_and_zero_padding(X_validation, max_seq_length)
@@ -49,6 +50,7 @@ X_train, X_validation, Y_train, Y_validation = train_test_split(X, Y, test_size=
 # Convert labels to their numpy representations
 Y_train = Y_train.values
 Y_validation = Y_validation.values
+Y_test = Y_test.values
 
 # Make sure everything is ok
 assert X_train['question1_n'].shape == X_train['question2_n'].shape
@@ -62,37 +64,51 @@ embed = hub.Module(module_url)
 messages = tf.placeholder(dtype=tf.string, shape=[None])
 output = embed(messages)
 
-# with tf.Session() as session:
-# 	K.set_session(session)
-# 	session.run(tf.global_variables_initializer())
-# 	session.run(tf.tables_initializer())
+with tf.Session() as session:
+	K.set_session(session)
+	session.run(tf.global_variables_initializer())
+	session.run(tf.tables_initializer())
 	
-# 	X_train_embed = {}
-# 	X_train_embed['left'] = []
-# 	X_train_embed['right'] = []
-# 	for i in range(0, len(X_train), 1024):
-# 		# print(X_train['question2_n'][i:i+1024])
-# 		x_left = session.run(output, {messages: X_train['question1_n'][i:i+1024]})
-# 		x_right = session.run(output, {messages: X_train['question2_n'][i:i+1024]})
-# 		X_train_embed['left'].append(x_left)
-# 		X_train_embed['right'].append(x_right)
-# 		print(i)
+	X_test_embed = {}
+	X_test_embed['left'] = []
+	X_test_embed['right'] = []
+	for i in range(0, len(X_test), 1024):
+		# print(X_train['question2_n'][i:i+1024])
+		x_left = session.run(output, {messages: X_test['question1_n'][i:i+1024]})
+		x_right = session.run(output, {messages: X_test['question2_n'][i:i+1024]})
+		X_test_embed['left'].append(x_left)
+		X_test_embed['right'].append(x_right)
+		print(i)
 
-# 	pickle.dump(X_train_embed, open('./data/X_train_use.pkl','wb'))
-# 	print('done')
+	pickle.dump(X_test_embed, open('./data/X_test_use.pkl','wb'))
+	print('done')
 
-# 	X_valid_embed = {}
-# 	X_valid_embed['left'] = []
-# 	X_valid_embed['right'] = []
-# 	for i in range(0, len(X_validation), 1024):
-# 		x_left = session.run(output, {messages: X_validation['question1_n'][i:i+1024]})
-# 		x_right = session.run(output, {messages: X_validation['question2_n'][i:i+1024]})
-# 		X_valid_embed['left'].append(x_left)
-# 		X_valid_embed['right'].append(x_right)
-# 		print(i)
+	# X_train_embed = {}
+	# X_train_embed['left'] = []
+	# X_train_embed['right'] = []
+	# for i in range(0, len(X_train), 1024):
+	# 	# print(X_train['question2_n'][i:i+1024])
+	# 	x_left = session.run(output, {messages: X_train['question1_n'][i:i+1024]})
+	# 	x_right = session.run(output, {messages: X_train['question2_n'][i:i+1024]})
+	# 	X_train_embed['left'].append(x_left)
+	# 	X_train_embed['right'].append(x_right)
+	# 	print(i)
 
-# 	pickle.dump(X_valid_embed, open('./data/X_valid_use.pkl','wb'))
-# 	print('done')
+	# pickle.dump(X_train_embed, open('./data/X_train_use.pkl','wb'))
+	# print('done')
+
+	# X_valid_embed = {}
+	# X_valid_embed['left'] = []
+	# X_valid_embed['right'] = []
+	# for i in range(0, len(X_validation), 1024):
+	# 	x_left = session.run(output, {messages: X_validation['question1_n'][i:i+1024]})
+	# 	x_right = session.run(output, {messages: X_validation['question2_n'][i:i+1024]})
+	# 	X_valid_embed['left'].append(x_left)
+	# 	X_valid_embed['right'].append(x_right)
+	# 	print(i)
+
+	# pickle.dump(X_valid_embed, open('./data/X_valid_use.pkl','wb'))
+	# print('done')
 
 X_train = pickle.load(open('./data/X_train_use.pkl', 'rb'))
 # X_train['left'] = np.expand_dims(np.concatenate(X_train['left'], axis=0), 2)
@@ -108,8 +124,16 @@ X_validation = pickle.load(open('./data/X_valid_use.pkl', 'rb'))
 X_validation['left'] = np.concatenate(X_validation['left'], axis=0)
 X_validation['right'] = np.concatenate(X_validation['right'], axis=0)
 
+X_test = pickle.load(open('./data/X_test_use.pkl', 'rb'))
+# X_train['left'] = np.expand_dims(np.concatenate(X_train['left'], axis=0), 2)
+# X_train['right'] = np.expand_dims(np.concatenate(X_train['right'], axis=0), 2)
+
+X_test['left'] = np.concatenate(X_test['left'], axis=0)
+X_test['right'] = np.concatenate(X_test['right'], axis=0)
+
 X_train = np.array([np.concatenate((X_train['left'][i], X_train['right'][i])) for i in range(len(X_train['left']))])
 X_validation = np.array([np.concatenate((X_validation['left'][i], X_validation['right'][i])) for i in range(len(X_validation['left']))])
+X_test = np.array([np.concatenate((X_test['left'][i], X_test['right'][i])) for i in range(len(X_test['left']))])
 
 
 model = Sequential()
@@ -134,9 +158,9 @@ try:
 	training_end_time = time()
 	print("Training time finished.\n%d epochs in %12.2f" % (50,
 															training_end_time - training_start_time))
-	model.save('./data/SiameseLSTM_use_fcn.h5')
+	model.save('./data/SiameseLSTM_USE_fcn.h5')
 except KeyboardInterrupt:
-	model.save('./data/SiameseLSTM_use_fcn.h5')
+	model.save('./data/SiameseLSTM_USE_fcn.h5')
 	print('saved')
 
 print(str(malstm_trained.history['val_acc'][-1])[:6] +
