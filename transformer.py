@@ -137,14 +137,19 @@ X_test = np.array([np.concatenate((X_test['left'][i], X_test['right'][i])) for i
 
 
 model = Sequential()
-# model.add(Conv1D(512, kernel_size=5, activation='relu'))
-# model.add(GlobalMaxPool1D())
-model.add(Dense(500, activation='relu'))
-model.add(Dropout(0.5))
+model.add(Conv1D(512, kernel_size=5, activation='relu'))
+model.add(GlobalMaxPool1D())
 model.add(Dense(250, activation='relu'))
-model.add(Dropout(0.5))
 model.add(Dense(1, activation='sigmoid'))
 model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
+model.summary()
+
+# model.add(Dense(500, activation='relu'))
+# model.add(Dropout(0.5))
+# model.add(Dense(250, activation='relu'))
+# model.add(Dropout(0.5))
+# model.add(Dense(1, activation='sigmoid'))
+# model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
 
 
 # Start trainings
