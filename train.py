@@ -33,8 +33,8 @@ use_w2v = True
 
 # train_df, embeddings = make_w2v_embeddings(train_df, embedding_dim=embedding_dim, empty_w2v=not use_w2v)
 # pickle.dump([train_df, embeddings], open('../quora/data/embeddings_glove.pkl','wb'))
-train_df, embeddings = pickle.load(open('./data/embeddings.pkl','rb'))
-# train_df, embeddings = pickle.load(open('../quora/data/embeddings_glove.pkl','rb'))
+# train_df, embeddings = pickle.load(open('./data/embeddings.pkl','rb'))
+train_df, embeddings = pickle.load(open('../quora/data/embeddings_glove.pkl','rb'))
 
 
 # Split to train validation
@@ -108,11 +108,11 @@ try:
                             validation_data=([X_validation['left'], X_validation['right']], Y_validation, ), callbacks=callbacks)
 
     training_end_time = time()
-    model.save('./data/SiameseLSTM_word2vec.h5')
+    model.save('./data/SiameseLSTM_glove.h5')
     print("Training time finished.\n%d epochs in %12.2f" % (n_epoch, training_end_time - training_start_time))
     
 except KeyboardInterrupt:
-    model.save('./data/SiameseLSTM_word2vec.h5')
+    model.save('./data/SiameseLSTM_glove.h5')
 
 # Plot accuracy
 plt.subplot(211)
