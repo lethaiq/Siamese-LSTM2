@@ -121,8 +121,8 @@ X_validation = pickle.load(open('./data/X_valid_use.pkl', 'rb'))
 X_validation['left'] = np.expand_dims(np.concatenate(X_validation['left'], axis=0), 2)
 X_validation['right'] = np.expand_dims(np.concatenate(X_validation['right'], axis=0), 2)
 
-X_validation['left'] = np.concatenate(X_validation['left'], axis=0)
-X_validation['right'] = np.concatenate(X_validation['right'], axis=0)
+# X_validation['left'] = np.concatenate(X_validation['left'], axis=0)
+# X_validation['right'] = np.concatenate(X_validation['right'], axis=0)
 
 X_test = pickle.load(open('./data/X_test_use.pkl', 'rb'))
 X_test['left'] = np.expand_dims(np.concatenate(X_test['left'], axis=0), 2)
