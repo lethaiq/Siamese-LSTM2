@@ -65,8 +65,12 @@ with tf.Session() as session:
   K.set_session(session)
   session.run(tf.global_variables_initializer())
   session.run(tf.tables_initializer())
-  X_train_embed = session.run(embed(X_train))
-  X_validation_embed = session.run(embed(X_validation))
+
+  X_train_embed = []
+  for i in range(0, len(X_train), 32):
+      X_train_embed.append(session.run(embed(X_train[i:i+32])))
+      print(len(X_train_embed))
+#   X_validation_embed = session.run(embed(X_validation))
   
 
 # x = Sequential()
