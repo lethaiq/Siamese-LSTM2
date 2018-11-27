@@ -87,11 +87,11 @@ def UniversalEmbedding(x):
 # 	print('done')
 
 X_train = pickle.load(open('./data/X_train_use.pkl', 'rb'))
-X_train = np.array(X_train).flatten()
+X_train = np.concatenate(X_train, axis=0)
 X_validation = pickle.load(open('./data/X_valid_use.pkl', 'rb'))
-X_validation = np.array(X_validation).flatten()
+X_validation = np.concatenate(X_validation, axis=0)
 
-print(X_train[0].shape)
+print(X_train.shape)
 print(X_validation.shape)
 
 #   X_validation_embed = session.run(embed(X_validation))
