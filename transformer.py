@@ -101,7 +101,7 @@ malstm_distance = ManDist()([shared_model(left_input), shared_model(right_input)
 model = Model(inputs=[left_input, right_input], outputs=[malstm_distance])
 model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
 
-Start trainings
+# Start trainings
 training_start_time = time()
 callbacks = [EarlyStopping(monitor='val_loss', patience=4)]
 malstm_trained = model.fit([X_train['left'], X_train['right']], Y_train,
