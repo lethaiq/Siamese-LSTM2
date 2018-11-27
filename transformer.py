@@ -68,8 +68,8 @@ with tf.Session() as session:
 	
 	X_train_embed = []
 	for i in range(0, len(X_train), 1024):
-		x_left = session.run(output, {messages: X_train['left'][i:i+1024]})
-		x_right = session.run(output, {messages: X_train['right'][i:i+1024]})
+		x_left = session.run(output, {messages: X_train['question1_n'][i:i+1024]})
+		x_right = session.run(output, {messages: X_train['question2_n'][i:i+1024]})
 		X_train_embed.append([x_left, x_right])
 		print(i)
 
@@ -78,8 +78,8 @@ with tf.Session() as session:
 
 	X_valid_embed = []
 	for i in range(0, len(X_validation), 1024):
-		x_left = session.run(output, {messages: X_validation['left'][i:i+1024]})
-		x_right = session.run(output, {messages: X_validation['right'][i:i+1024]})
+		x_left = session.run(output, {messages: X_validation['question1_n'][i:i+1024]})
+		x_right = session.run(output, {messages: X_validation['question2_n'][i:i+1024]})
 		X_valid_embed.append([x_left, x_right])
 		print(i)
 
