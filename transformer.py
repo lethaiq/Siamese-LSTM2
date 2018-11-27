@@ -108,24 +108,9 @@ X_validation = pickle.load(open('./data/X_valid_use.pkl', 'rb'))
 X_validation['left'] = np.concatenate(X_validation['left'], axis=0)
 X_validation['right'] = np.concatenate(X_validation['right'], axis=0)
 
-# x = Sequential()
-# x.add(Conv1D(512, kernel_size=5, activation='relu'))
-# x.add(Conv1D(512, kernel_size=3, activation='relu'))
-# x.add(GlobalMaxPool1D())
-# # x.add(Dense(250, activation='relu'))
-# # x.add(Dropout(0.3))
-# # x.add(Dense(1, activation='sigmoid'))
-# # x.add(LSTM(50))
-# # x.add(Dense(250))
-# shared_model = x
+X_train = np.array([np.concatenate((X_train['left'][i], X_train['right'][i])) for i in range(len(X_train['left']))])
+X_validation = np.array([np.concatenate((X_validation['left'][i], X_validation['right'][i])) for i in range(len(X_validation['left']))])
 
-# The visible layer
-# left_input = Input(shape=(512,1), dtype='float')
-# right_input = Input(shape=(512,1), dtype='float')
-
-# Pack it all up into a Manhattan Distance model
-# malstm_distance = ManDist()([shared_model(left_input), shared_model(right_input)])
-# model = Model(inputs=[left_input, right_input], outputs=[malstm_distance])
 
 model = Sequential()
 # model.add(Conv1D(512, kernel_size=5, activation='relu'))
@@ -135,8 +120,6 @@ model.add(Dense(250, activation='relu'))
 model.add(Dense(1, activation='sigmoid'))
 model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
 
-X_train = np.array([np.concatenate((X_train['left'][i], X_train['right'][i])) for i in range(len(X_train['left']))])
-X_validation = np.array([np.concatenate((X_validation['left'][i], X_validation['right'][i])) for i in range(len(X_validation['left']))])
 
 # Start trainings
 training_start_time = time()
@@ -149,8 +132,9 @@ try:
 	training_end_time = time()
 	print("Training time finished.\n%d epochs in %12.2f" % (50,
 															training_end_time - training_start_time))
+	model.save('./data/SiameseLSTM_use_fcn.h5')
 except KeyboardInterrupt:
-	model.save('./data/SiameseLSTM_use.h5')
+	model.save('./data/SiameseLSTM_use_fcn.h5')
 	print('saved')
 
 print(str(malstm_trained.history['val_acc'][-1])[:6] +

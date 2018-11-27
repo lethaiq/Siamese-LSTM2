@@ -105,7 +105,7 @@ X_validation['right'] = np.expand_dims(np.concatenate(X_validation['right'], axi
 X_train = np.array([np.concatenate((X_train['left'][i], X_train['right'][i])) for i in range(len(X_train['left']))])
 X_validation = np.array([np.concatenate((X_validation['left'][i], X_validation['right'][i])) for i in range(len(X_validation['left']))])
 
-model = tf.keras.models.load_model('./data/SiameseLSTM_use.h5')
+model = tf.keras.models.load_model('./data/SiameseLSTM_use_fcn.h5')
 model.summary()
 
 prediction = model.predict(X_validation, verbose=1, batch_size=128)
