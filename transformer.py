@@ -16,6 +16,7 @@ import tensorflow as tf
 from tensorflow.python.keras.models import Model, Sequential
 from tensorflow.python.keras.layers import Input, Embedding, LSTM, GRU, Conv1D, Conv2D, GlobalMaxPool1D, Dense, Dropout
 from keras.layers.core import Reshape
+from sklearn.metrics import f1_score
 
 from util import make_w2v_embeddings
 from util import split_and_zero_padding

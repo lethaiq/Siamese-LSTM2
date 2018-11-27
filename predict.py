@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import f1_score
 
 import tensorflow as tf
 
@@ -69,11 +70,15 @@ mse = mean_squared_error(Y_validation, prediction)
 prediction_int = prediction >= 0.5
 prediction_int = np.array(prediction_int).astype(int)
 acc = accuracy_score(Y_validation, prediction_int, normalize=True)
+f1 = f1_score(Y_validation, prediction_int, average='weighted') 
 print(mse, acc)
+print(f1)
 
 prediction = model.predict([X_train['left'], X_train['right']], verbose=1, batch_size=512)
 mse = mean_squared_error(Y_train, prediction)
 prediction_int = prediction >= 0.5
 prediction_int = np.array(prediction_int).astype(int)
 acc = accuracy_score(Y_train, prediction_int, normalize=True)
+f1 = f1_score(Y_train, prediction_int, average='weighted') 
 print(mse, acc)
+print(f1)
