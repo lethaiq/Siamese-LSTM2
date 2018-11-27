@@ -103,7 +103,12 @@ X_validation['right'] = np.expand_dims(np.concatenate(X_validation['right'], axi
 
 
 x = Sequential()
-x.add(LSTM(50))
+x.add(Conv1D(250, kernel_size=5, activation='relu'))
+x.add(GlobalMaxPool1D())
+x.add(Dense(250, activation='relu'))
+x.add(Dropout(0.3))
+x.add(Dense(1, activation='sigmoid'))
+# x.add(LSTM(50))
 shared_model = x
 
 # The visible layer
