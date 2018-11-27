@@ -33,7 +33,9 @@ use_w2v = True
 
 # train_df, embeddings = make_w2v_embeddings(train_df, embedding_dim=embedding_dim, empty_w2v=not use_w2v)
 # pickle.dump([train_df, embeddings], open('../quora/data/embeddings_glove.pkl','wb'))
-train_df, embeddings = pickle.load(open('../quora/data/embeddings.pkl','rb'))
+train_df, embeddings = pickle.load(open('./data/embeddings.pkl','rb'))
+# train_df, embeddings = pickle.load(open('../quora/data/embeddings_glove.pkl','rb'))
+
 
 # Split to train validation
 validation_size = int(len(train_df) * 0.1)
@@ -51,10 +53,12 @@ print(X_test.shape)
 
 X_train = split_and_zero_padding(X_train, max_seq_length)
 X_validation = split_and_zero_padding(X_validation, max_seq_length)
+X_test = split_and_zero_padding(X_test, max_seq_length)
 
 # Convert labels to their numpy representations
 Y_train = Y_train.values
 Y_validation = Y_validation.values
+Y_test = Y_test.values
 
 # Make sure everything is ok
 assert X_train['left'].shape == X_train['right'].shape
