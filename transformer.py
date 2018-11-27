@@ -131,15 +131,13 @@ model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), m
 X_train = np.array([np.concatenate((X_train['left'][i], X_train['right'][i])) for i in range(len(X_train['left']))])
 X_validation = np.array([np.concatenate((X_validation['left'][i], X_validation['right'][i])) for i in range(len(X_validation['left']))])
 
-print(X_train.shape)
-
 # Start trainings
 training_start_time = time()
 callbacks = [EarlyStopping(monitor='val_loss', patience=4)]
 # malstm_trained = model.fit([X_train['left'], X_train['right']], Y_train,
 #                            batch_size=1024, epochs=5,
 #                            validation_data=([X_validation['left'], X_validation['right']], Y_validation, ), callbacks=callbacks)
-malstm_trained = model.fit(X_train, batch_size=1024, epochs=50, validation_data=(X_validation, Y_validation), callbacks=callbacks)
+malstm_trained = model.fit(X_train, Y_train, batch_size=1024, epochs=50, validation_data=(X_validation, Y_validation), callbacks=callbacks)
 training_end_time = time()
 print("Training time finished.\n%d epochs in %12.2f" % (n_epoch,
                                                         training_end_time - training_start_time))
