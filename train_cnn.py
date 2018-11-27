@@ -55,6 +55,8 @@ Y_validation = Y_validation.values
 assert X_train['left'].shape == X_train['right'].shape
 assert len(X_train['left']) == len(Y_train)
 
+X_train = np.array([np.concatenate((X_train['left'][i], X_train['right'][i])) for i in range(len(X_train['left']))])
+X_validation = np.array([np.concatenate((X_validation['left'][i], X_validation['right'][i])) for i in range(len(X_validation['left']))])
 # --
 
 # Model variables
@@ -79,9 +81,9 @@ try:
     # Start trainings
     training_start_time = time()
     callbacks = [EarlyStopping(monitor='val_loss', patience=3)]
-    malstm_trained = model.fit([X_train['left'], X_train['right']], Y_train,
+    malstm_trained = model.fit(X_train, Y_train,
                             batch_size=batch_size, epochs=n_epoch,
-                            validation_data=([X_validation['left'], X_validation['right']], Y_validation, ), callbacks=callbacks)
+                            validation_data=(X_validation, Y_validation, ), callbacks=callbacks)
 
     training_end_time = time()
     print("Training time finished.\n%d epochs in %12.2f" % (n_epoch,
