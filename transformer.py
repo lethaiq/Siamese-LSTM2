@@ -45,8 +45,8 @@ training_size = len(train_df) - validation_size
 X_train, X_validation, Y_train, Y_validation = train_test_split(X, Y, test_size=validation_size, random_state=22)
 
 
-X_train = ["{} {}".format(i[0], i[1]) for i in X_train.get_values()]
-X_validation = ["{} {}".format(i[0], i[1]) for i in X_validation.get_values()]
+X_train = np.array(["{} {}".format(i[0], i[1]) for i in X_train.get_values()])
+X_validation = np.array(["{} {}".format(i[0], i[1]) for i in X_validation.get_values()])
 
 # Convert labels to their numpy representations
 Y_train = Y_train.values
@@ -72,8 +72,7 @@ with tf.Session() as session:
   K.set_session(session)
   session.run(tf.global_variables_initializer())
   session.run(tf.tables_initializer())
-  history = model.fit(X_train, 
-            Y_train,
+  history = model.fit(X_train, Y_train,
             validation_data=(X_validation, Y_validation),
             epochs=10,
             batch_size=64)
