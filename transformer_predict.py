@@ -109,26 +109,35 @@ X_validation = pickle.load(open('./data/X_valid_use.pkl', 'rb'))
 X_validation['left'] = np.concatenate(X_validation['left'], axis=0)
 X_validation['right'] = np.concatenate(X_validation['right'], axis=0)
 
+X_test = pickle.load(open('./data/X_test_use.pkl', 'rb'))
+# X_train['left'] = np.expand_dims(np.concatenate(X_train['left'], axis=0), 2)
+# X_train['right'] = np.expand_dims(np.concatenate(X_train['right'], axis=0), 2)
+
+X_test['left'] = np.concatenate(X_test['left'], axis=0)
+X_test['right'] = np.concatenate(X_test['right'], axis=0)
+
 X_train = np.array([np.concatenate((X_train['left'][i], X_train['right'][i])) for i in range(len(X_train['left']))])
 X_validation = np.array([np.concatenate((X_validation['left'][i], X_validation['right'][i])) for i in range(len(X_validation['left']))])
+X_test = np.array([np.concatenate((X_test['left'][i], X_test['right'][i])) for i in range(len(X_test['left']))])
 
-model = tf.keras.models.load_model('./data/SiameseLSTM_use_fcn.h5')
+
+model = tf.keras.models.load_model('./data/SiameseLSTM_USE_fcn.h5')
 model.summary()
 
-prediction = model.predict(X_validation, verbose=1, batch_size=128)
-mse = mean_squared_error(Y_validation, prediction)
+prediction = model.predict(X_test, verbose=1, batch_size=128)
+mse = mean_squared_error(Y_test, prediction)
 prediction_int = prediction >= 0.5
 prediction_int = np.array(prediction_int).astype(int)
-acc = accuracy_score(Y_validation, prediction_int, normalize=True)
-f1 = f1_score(Y_validation, prediction_int, average='weighted') 
+acc = accuracy_score(Y_test, prediction_int, normalize=True)
+f1 = f1_score(Y_test, prediction_int, average='weighted') 
 print(mse, acc)
 print(f1)
 
-prediction = model.predict(X_train, verbose=1, batch_size=512)
-mse = mean_squared_error(Y_train, prediction)
-prediction_int = prediction >= 0.5
-prediction_int = np.array(prediction_int).astype(int)
-acc = accuracy_score(Y_train, prediction_int, normalize=True)
-f1 = f1_score(Y_train, prediction_int, average='weighted') 
-print(mse, acc)
-print(f1)
+# prediction = model.predict(X_train, verbose=1, batch_size=512)
+# mse = mean_squared_error(Y_train, prediction)
+# prediction_int = prediction >= 0.5
+# prediction_int = np.array(prediction_int).astype(int)
+# acc = accuracy_score(Y_train, prediction_int, normalize=True)
+# f1 = f1_score(Y_train, prediction_int, average='weighted') 
+# print(mse, acc)
+# print(f1)
