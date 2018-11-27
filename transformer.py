@@ -69,7 +69,7 @@ with tf.Session() as session:
 	
 	X_train_embed = []
 	for i in range(0, len(X_train), 1024):
-		print(X_train['question2_n'][i:i+1024])
+		# print(X_train['question2_n'][i:i+1024])
 		x_left = session.run(output, {messages: X_train['question1_n'][i:i+1024]})
 		x_right = session.run(output, {messages: X_train['question2_n'][i:i+1024]})
 		X_train_embed.append([x_left, x_right])
