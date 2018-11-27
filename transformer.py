@@ -62,7 +62,7 @@ def UniversalEmbedding(x):
 
 input_text = layers.Input(shape=(1,), dtype=tf.string)
 embedding = layers.Lambda(UniversalEmbedding, output_shape=(512,))(input_text)
-embedding = layers.Lambda(lambda ipt: K.expand_dims(ipt, 1))(embedding)
+# embedding = layers.Lambda(lambda ipt: K.expand_dims(ipt, 1))(embedding)
 dense = GRU(50)(embedding)
 pred = layers.Dense(1, activation='softmax')(dense)
 model = Model(inputs=[input_text], outputs=pred)
