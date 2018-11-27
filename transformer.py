@@ -79,7 +79,7 @@ with tf.Session() as session:
 
 	X_valid_embed = []
 	for i in range(0, len(X_validation), 1024):
-		x = session.run(embed(X_validation[i:i+1024]))
+		x = session.run(output, {messages: X_validation[i:i+1024]})
 		X_valid_embed.append(x)
 		print(i)
 
