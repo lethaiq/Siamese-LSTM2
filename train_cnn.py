@@ -75,6 +75,7 @@ x.add(Embedding(len(embeddings), embedding_dim, weights=[embeddings], input_shap
 x.add(Conv1D(512, kernel_size=5, activation='relu'))
 x.add(GlobalMaxPool1D())
 x.add(Dense(250, activation='relu'))
+x.add(Dropout(0.5))
 x.add(Dense(1, activation='sigmoid'))
 x.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
 x.summary()
