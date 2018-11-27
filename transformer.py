@@ -102,31 +102,37 @@ X_validation['left'] = np.expand_dims(np.concatenate(X_validation['left'], axis=
 X_validation['right'] = np.expand_dims(np.concatenate(X_validation['right'], axis=0), 2)
 
 
-x = Sequential()
-x.add(Conv1D(512, kernel_size=5, activation='relu'))
-x.add(Conv1D(512, kernel_size=3, activation='relu'))
-x.add(GlobalMaxPool1D())
-# x.add(Dense(250, activation='relu'))
-# x.add(Dropout(0.3))
-# x.add(Dense(1, activation='sigmoid'))
-# x.add(LSTM(50))
-# x.add(Dense(250))
-shared_model = x
+# x = Sequential()
+# x.add(Conv1D(512, kernel_size=5, activation='relu'))
+# x.add(Conv1D(512, kernel_size=3, activation='relu'))
+# x.add(GlobalMaxPool1D())
+# # x.add(Dense(250, activation='relu'))
+# # x.add(Dropout(0.3))
+# # x.add(Dense(1, activation='sigmoid'))
+# # x.add(LSTM(50))
+# # x.add(Dense(250))
+# shared_model = x
 
 # The visible layer
-left_input = Input(shape=(512,1), dtype='float')
-right_input = Input(shape=(512,1), dtype='float')
+# left_input = Input(shape=(512,1), dtype='float')
+# right_input = Input(shape=(512,1), dtype='float')
 
 # Pack it all up into a Manhattan Distance model
-malstm_distance = ManDist()([shared_model(left_input), shared_model(right_input)])
-model = Model(inputs=[left_input, right_input], outputs=[malstm_distance])
+# malstm_distance = ManDist()([shared_model(left_input), shared_model(right_input)])
+# model = Model(inputs=[left_input, right_input], outputs=[malstm_distance])
+model = Sequential()
+model.add(Conv1D(512, kernel_size=5, activation='relu'))
+model.add(GlobalMaxPool1D())
+model.add(Dense(250, activation='relu'))
+model.add(Dropout(0.3))
+model.add(Dense(1, activation='sigmoid'))
 model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
 
 # Start trainings
 training_start_time = time()
 callbacks = [EarlyStopping(monitor='val_loss', patience=4)]
 malstm_trained = model.fit([X_train['left'], X_train['right']], Y_train,
-                           batch_size=1024, epochs=100,
+                           batch_size=1024, epochs=5,
                            validation_data=([X_validation['left'], X_validation['right']], Y_validation, ), callbacks=callbacks)
 
 training_end_time = time()
