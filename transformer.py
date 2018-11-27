@@ -57,12 +57,11 @@ Y_validation = Y_validation.values
 embed = hub.Module(module_url)
 
 def UniversalEmbedding(x):
-    return tf.expand_dims(embed(tf.squeeze(tf.cast(x, tf.string)), 
-        signature="default", as_dict=True)["default"],1)
+    return embed(tf.squeeze(tf.cast(x, tf.string)), 
+        signature="default", as_dict=True)["default"]
 
 input_text = layers.Input(shape=(1,), dtype=tf.string)
-embedding = layers.Lambda(UniversalEmbedding, output_shape=(512,))(input_text)
-print(embedding.summary())
+embedding = layers.Lambda(UniversalEmbedding, output_shape=(512,1))(input_text)
 
 dense = LSTM(50)(embedding)
 # dense = layers.Dense(256, activation='relu')(embedding)
