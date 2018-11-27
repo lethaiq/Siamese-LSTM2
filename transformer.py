@@ -61,8 +61,7 @@ def UniversalEmbedding(x):
         signature="default", as_dict=True)["default"]
 
 input_text = layers.Input(shape=(1,), dtype=tf.string)
-embedding = layers.Lambda(UniversalEmbedding, output_shape=(512,1))(input_text)
-print(embedding)
+embedding = layers.Lambda(UniversalEmbedding, output_shape=(512,2))(input_text)
 dense = LSTM(50)(embedding)
 # dense = layers.Dense(256, activation='relu')(embedding)
 pred = layers.Dense(1, activation='softmax')(dense)
