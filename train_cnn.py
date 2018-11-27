@@ -86,7 +86,7 @@ model = x
 try:
     # Start trainings
     training_start_time = time()
-    callbacks = [EarlyStopping(monitor='val_loss', patience=3)]
+    callbacks = [EarlyStopping(monitor='val_loss', patience=5)]
     malstm_trained = model.fit(X_train, Y_train,
                             batch_size=batch_size, epochs=n_epoch,
                             validation_data=(X_validation, Y_validation), callbacks=callbacks)
