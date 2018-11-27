@@ -4,6 +4,7 @@ from time import time
 import pandas as pd
 
 import matplotlib
+import numpy as np
 
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
