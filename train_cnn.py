@@ -29,7 +29,7 @@ for q in ['question1', 'question2']:
 
 # Make word2vec embeddings
 embedding_dim = 300
-max_seq_length = 20
+max_seq_length = 40
 use_w2v = True
 
 # train_df, embeddings = make_w2v_embeddings(train_df, embedding_dim=embedding_dim, empty_w2v=not use_w2v)
