@@ -15,18 +15,13 @@ import tensorflow as tf
 
 from tensorflow.python.keras.models import Model, Sequential
 from tensorflow.python.keras.layers import Input, Embedding, LSTM, GRU, Conv1D, Conv2D, GlobalMaxPool1D, Dense, Dropout
-from keras.layers.core import Reshape
 from sklearn.metrics import f1_score
 
 from util import make_w2v_embeddings
 from util import split_and_zero_padding
 from util import ManDist
 import pickle
-import keras
 
-from keras import layers
-from keras.models import Model
-import keras.backend as K
 module_url = "https://tfhub.dev/google/universal-sentence-encoder-large/3"
 # File paths
 TRAIN_CSV = '../quora/data/train.csv'
@@ -91,7 +86,6 @@ X_train = np.expand_dims(np.concatenate(X_train, axis=0), 2)
 X_validation = pickle.load(open('./data/X_valid_use.pkl', 'rb'))
 X_validation = np.expand_dims(np.concatenate(X_validation, axis=0), 2)
 
-print(X_train.shape)
 #   X_validation_embed = session.run(embed(X_validation))
 
 x = Sequential()
