@@ -101,6 +101,7 @@ X_validation = pickle.load(open('./data/X_valid_use.pkl', 'rb'))
 X_validation['left'] = np.expand_dims(np.concatenate(X_validation['left'], axis=0), 2)
 X_validation['right'] = np.expand_dims(np.concatenate(X_validation['right'], axis=0), 2)
 
+print(X_train['left'].shape)
 
 # #   X_validation_embed = session.run(embed(X_validation))
 
