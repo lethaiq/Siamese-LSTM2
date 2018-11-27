@@ -29,7 +29,7 @@ for q in ['question1', 'question2']:
 
 # Make word2vec embeddings
 embedding_dim = 300
-max_seq_length = 40
+max_seq_length = 20
 use_w2v = True
 
 # train_df, embeddings = make_w2v_embeddings(train_df, embedding_dim=embedding_dim, empty_w2v=not use_w2v)
@@ -71,7 +71,7 @@ n_hidden = 50
 
 # Define the shared model
 x = Sequential()
-x.add(Embedding(len(embeddings), embedding_dim, weights=[embeddings], input_shape=(max_seq_length,), trainable=False))
+x.add(Embedding(len(embeddings), embedding_dim, weights=[embeddings], input_shape=(max_seq_length*2,), trainable=False))
 x.add(Conv1D(512, kernel_size=5, activation='relu'))
 x.add(GlobalMaxPool1D())
 x.add(Dense(250, activation='relu'))
