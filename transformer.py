@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 import tensorflow as tf
-
+import keras.backend as K
 from tensorflow.python.keras.models import Model, Sequential
 from tensorflow.python.keras.layers import Input, Embedding, LSTM, GRU, Conv1D, Conv2D, GlobalMaxPool1D, Dense, Dropout
 from sklearn.metrics import f1_score
