@@ -142,7 +142,7 @@ model.add(GlobalMaxPool1D())
 model.add(Dense(250, activation='relu'))
 model.add(Dense(1, activation='sigmoid'))
 model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
-model.summary()
+# model.summary()
 
 # model.add(Dense(500, activation='relu'))
 # model.add(Dropout(0.5))
