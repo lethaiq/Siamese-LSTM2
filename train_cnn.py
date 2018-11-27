@@ -60,8 +60,8 @@ X_train = np.array([np.concatenate((X_train['left'][i], X_train['right'][i])) fo
 X_validation = np.array([np.concatenate((X_validation['left'][i], X_validation['right'][i])) for i in range(len(X_validation['left']))])
 # --
 
-print(X_train.shape)
-print(X_validation.shape)
+print(X_train.shape, Y_train.shape)
+print(X_validation.shape, Y_validation.shape)
 
 # Model variables
 gpus = 1
