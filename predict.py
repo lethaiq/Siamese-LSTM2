@@ -48,7 +48,7 @@ X = train_df[['question1_n', 'question2_n']]
 Y = train_df['is_duplicate']
 
 X_train, X_validation, Y_train, Y_validation = train_test_split(X, Y, test_size=0.2, random_state=22)
-X_validation, X_test, Y_validation, Y_test = train_test_split(X_validation, Y_validation, test_size=0.1, random_state=22)
+X_validation, X_test, Y_validation, Y_test = train_test_split(X_validation, Y_validation, test_size=0.5, random_state=22)
 
 print(X_train.shape)
 print(X_validation.shape)
@@ -69,7 +69,7 @@ assert len(X_train['left']) == len(Y_train)
 
 # --
 
-model = tf.keras.models.load_model('./data/SiameseLSTM_glove.h5', custom_objects={'ManDist': ManDist})
+model = tf.keras.models.load_model('./data/SiameseLSTM_word2vec.h5', custom_objects={'ManDist': ManDist})
 model.summary()
 
 prediction = model.predict([X_test['left'], X_test['right']], verbose=1, batch_size=128)
