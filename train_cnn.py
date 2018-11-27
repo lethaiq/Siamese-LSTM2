@@ -72,7 +72,7 @@ n_hidden = 50
 # Define the shared model
 x = Sequential()
 x.add(Embedding(len(embeddings), embedding_dim, weights=[embeddings], input_shape=(max_seq_length*2,), trainable=False))
-x.add(Conv1D(256, kernel_size=3, activation='relu'))
+x.add(Conv1D(256, kernel_size=5, activation='relu'))
 x.add(MaxPool1D(5))
 x.add(GlobalMaxPool1D())
 x.add(Dense(250, activation='relu'))
