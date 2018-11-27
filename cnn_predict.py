@@ -73,7 +73,7 @@ X_validation = np.array([np.concatenate((X_validation['left'][i], X_validation['
 X_test = np.array([np.concatenate((X_test['left'][i], X_test['right'][i])) for i in range(len(X_test['left']))])
 # --
 
-model = tf.keras.models.load_model('./data/LSTM_word2vec.h5')
+model = tf.keras.models.load_model('./data/LSTM_glove.h5')
 model.summary()
 
 prediction = model.predict(X_test, verbose=1, batch_size=128)
