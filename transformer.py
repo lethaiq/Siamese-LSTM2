@@ -15,6 +15,7 @@ import tensorflow as tf
 
 from tensorflow.python.keras.models import Model, Sequential
 from tensorflow.python.keras.layers import Input, Embedding, LSTM, GRU, Conv1D, Conv2D, GlobalMaxPool1D, Dense, Dropout
+from keras.layers.core import Reshape
 
 from util import make_w2v_embeddings
 from util import split_and_zero_padding
@@ -62,7 +63,7 @@ def UniversalEmbedding(x):
 input_text = layers.Input(shape=(1,), dtype=tf.string)
 embedding = layers.Lambda(UniversalEmbedding, output_shape=(512,))(input_text)
 dense = layers.Dense(256, activation='relu')(embedding)
-lstm = LSTM(500)(K.expand_dims(embedding,2))
+lstm = LSTM(500)(Reshape((None, 512, 1)(embedding)))
 pred = layers.Dense(1, activation='softmax')(lstm)
 model = Model(inputs=[input_text], outputs=pred)
 model.compile(loss='binary_crossentropy', 
