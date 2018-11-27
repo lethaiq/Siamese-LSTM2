@@ -42,7 +42,8 @@ validation_size = int(len(train_df) * 0.1)
 training_size = len(train_df) - validation_size
 
 
-X_train, X_validation, Y_train, Y_validation = train_test_split(X, Y, test_size=validation_size, random_state=22)
+X_train, X_validation, Y_train, Y_validation = train_test_split(X, Y, test_size=0.2, random_state=22)
+X_validation, X_test, Y_validation, Y_test = train_test_split(X_validation, Y_validation, test_size=0.1, random_state=22)
 
 # X_train = split_and_zero_padding(X_train, max_seq_length)
 # X_validation = split_and_zero_padding(X_validation, max_seq_length)
@@ -50,6 +51,8 @@ X_train, X_validation, Y_train, Y_validation = train_test_split(X, Y, test_size=
 # Convert labels to their numpy representations
 Y_train = Y_train.values
 Y_validation = Y_validation.values
+Y_test = Y_test.values
+
 
 # Make sure everything is ok
 assert X_train['question1_n'].shape == X_train['question2_n'].shape
