@@ -87,41 +87,24 @@ def UniversalEmbedding(x):
 # 	print('done')
 
 X_train = pickle.load(open('./data/X_train_use.pkl', 'rb'))
-X_train = np.concatenate(X_train, axis=0)
+X_train = np.expand_dims(np.concatenate(X_train, axis=0), 2)
 X_validation = pickle.load(open('./data/X_valid_use.pkl', 'rb'))
-X_validation = np.concatenate(X_validation, axis=0)
+X_validation = np.expand_dims(np.concatenate(X_validation, axis=0), 2)
 
-print(X_train.shape)
-print(X_validation.shape)
 
 #   X_validation_embed = session.run(embed(X_validation))
-  
 
-# x = Sequential()
-# x.add(Embedding(len(embeddings), embedding_dim,
-#                 weights=[embeddings], input_shape=(max_seq_length,), trainable=False))
-# # CNN
-# # x.add(Conv1D(250, kernel_size=5, activation='relu'))
-# # x.add(GlobalMaxPool1D())
-# # x.add(Dense(250, activation='relu'))
-# # x.add(Dropout(0.3))
-# # x.add(Dense(1, activation='sigmoid'))
-# # LSTM
-# x.add(LSTM(n_hidden))
+x = Sequential()
+x.add(LSTM(50))
+shared_model = x
 
-# shared_model = x
+# The visible layer
+left_input = Input(shape=(512,), dtype='float')
+right_input = Input(shape=(512,), dtype='float')
 
-# # The visible layer
-# left_input = Input(shape=(max_seq_length,), dtype='int32')
-# right_input = Input(shape=(max_seq_length,), dtype='int32')
+# Pack it all up into a Manhattan Distance model
+malstm_distance = ManDist()([shared_model(left_input), shared_model(right_input)])
+model = Model(inputs=[left_input, right_input], outputs=[malstm_distance])
+model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
 
-# # Pack it all up into a Manhattan Distance model
-# malstm_distance = ManDist()([shared_model(left_input), shared_model(right_input)])
-# model = Model(inputs=[left_input, right_input], outputs=[malstm_distance])
-
-# if gpus >= 2:
-#     # `multi_gpu_model()` is a so quite buggy. it breaks the saved model.
-#     model = tf.keras.utils.multi_gpu_model(model, gpus=gpus)
-# model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
-# model.summary()
-# shared_model.summary()
+print(model.summary())
