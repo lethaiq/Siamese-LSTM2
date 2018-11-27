@@ -64,7 +64,7 @@ embedding = layers.Lambda(UniversalEmbedding, output_shape=(512,))(input_text)
 dense = layers.Dense(256, activation='relu')(embedding)
 pred = layers.Dense(2, activation='softmax')(dense)
 model = Model(inputs=[input_text], outputs=pred)
-model.compile(loss='categorical_crossentropy', 
+model.compile(loss='binary_crossentropy', 
 	optimizer='adam', metrics=['accuracy'])
 
 print(model.summary())
