@@ -59,33 +59,40 @@ def UniversalEmbedding(x):
 	return embed(tf.squeeze(tf.cast(x, tf.string)), 
 		signature="default", as_dict=True)["default"]
 
-embed = hub.Module(module_url)
-messages = tf.placeholder(dtype=tf.string, shape=[None])
-output = embed(messages)
+# embed = hub.Module(module_url)
+# messages = tf.placeholder(dtype=tf.string, shape=[None])
+# output = embed(messages)
 
-with tf.Session() as session:
-	K.set_session(session)
-	session.run(tf.global_variables_initializer())
-	session.run(tf.tables_initializer())
+# with tf.Session() as session:
+# 	K.set_session(session)
+# 	session.run(tf.global_variables_initializer())
+# 	session.run(tf.tables_initializer())
 	
-	X_train_embed = []
-	for i in range(0, len(X_train), 1024):
-		x = session.run(output, {messages: X_train[i:i+1024]})
-		X_train_embed.append(x)
-		print(i)
+# 	X_train_embed = []
+# 	for i in range(0, len(X_train), 1024):
+# 		x = session.run(output, {messages: X_train[i:i+1024]})
+# 		X_train_embed.append(x)
+# 		print(i)
 
-	pickle.dump(X_train_embed, open('./data/X_train_use.pkl','wb'))
-	print('done')
+# 	pickle.dump(X_train_embed, open('./data/X_train_use.pkl','wb'))
+# 	print('done')
 
-	X_valid_embed = []
-	for i in range(0, len(X_validation), 1024):
-		x = session.run(output, {messages: X_validation[i:i+1024]})
-		X_valid_embed.append(x)
-		print(i)
+# 	X_valid_embed = []
+# 	for i in range(0, len(X_validation), 1024):
+# 		x = session.run(output, {messages: X_validation[i:i+1024]})
+# 		X_valid_embed.append(x)
+# 		print(i)
 
-	pickle.dump(X_valid_embed, open('./data/X_valid_use.pkl','wb'))
-	print('done')
+# 	pickle.dump(X_valid_embed, open('./data/X_valid_use.pkl','wb'))
+# 	print('done')
 
+X_train = pickle.load(open('./data/X_train_use.pkl', 'rb'))
+X_train = np.array(X_train).flatten()
+X_validation = pickle.load(open('./data/X_valid_use.pkl', 'rb'))
+X_validation = np.array(X_validation).flatten()
+
+print(X_train.shape)
+print(X_validation.shape)
 
 #   X_validation_embed = session.run(embed(X_validation))
   
