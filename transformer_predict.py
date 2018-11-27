@@ -108,7 +108,7 @@ X_validation = np.array([np.concatenate((X_validation['left'][i], X_validation['
 model = tf.keras.models.load_model('./data/SiameseLSTM_use.h5')
 model.summary()
 
-prediction = model.predict(X_train, verbose=1, batch_size=128)
+prediction = model.predict(X_validation, verbose=1, batch_size=128)
 mse = mean_squared_error(Y_validation, prediction)
 prediction_int = prediction >= 0.5
 prediction_int = np.array(prediction_int).astype(int)
@@ -117,7 +117,7 @@ f1 = f1_score(Y_validation, prediction_int, average='weighted')
 print(mse, acc)
 print(f1)
 
-prediction = model.predict(X_validation, verbose=1, batch_size=512)
+prediction = model.predict(X_train, verbose=1, batch_size=512)
 mse = mean_squared_error(Y_train, prediction)
 prediction_int = prediction >= 0.5
 prediction_int = np.array(prediction_int).astype(int)
