@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import accuracy_score
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, log_loss
 import keras.backend as K
 
 import tensorflow as tf
@@ -142,6 +142,7 @@ model = tf.keras.models.load_model('./data/SiameseLSTM_USE_fcn.h5')
 model.summary()
 
 prediction = model.predict(X_test, verbose=1, batch_size=128)
+los_loss2 = log_loss(Y_test, prediction)
 mse = mean_squared_error(Y_test, prediction)
 prediction_int = prediction >= 0.5
 prediction_int = np.array(prediction_int).astype(int)
@@ -149,6 +150,7 @@ acc = accuracy_score(Y_test, prediction_int, normalize=True)
 f1 = f1_score(Y_test, prediction_int, average='weighted') 
 print(mse, acc)
 print(f1)
+print(los_loss2)
 
 # prediction = model.predict(X_train, verbose=1, batch_size=512)
 # mse = mean_squared_error(Y_train, prediction)
